@@ -69,7 +69,7 @@ body {
   margin: 0 0 0.5rem;
 }
 
-/* Animated cover logo: intro overlay → exact logo.png */
+/* Cover logo intro — every frame is a slice of logo.png */
 .logo-wrap {
   position: relative;
   width: min(480px, 90vw);
@@ -82,159 +82,156 @@ body {
   aspect-ratio: 1024 / 443;
 }
 
-.logo-stage > img,
-.logo-stage > svg {
+.logo-piece {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: contain;
   display: block;
-}
-
-.logo-final {
-  object-fit: contain;
-  opacity: 0;
-  animation: logoFinalReveal 0.5s ease forwards;
-  animation-delay: 2.5s;
-}
-
-.logo-letters {
-  object-fit: contain;
-  opacity: 0;
   pointer-events: none;
 }
 
-.logo-letters-ital {
-  clip-path: inset(6% 55% 6% 12%);
-  animation: logoLettersIn 0.55s ease forwards;
-  animation-delay: 1.05s;
+.logo-dot-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-.logo-letters-ap {
-  clip-path: inset(6% 3% 6% 64%);
-  animation: logoLettersIn 0.55s ease forwards;
-  animation-delay: 1.18s;
+.logo-piece-full {
+  z-index: 12;
+  opacity: 0;
+  animation: logoFullIn 0.45s ease forwards;
+  animation-delay: 1.85s;
 }
 
-.logo-overlay {
-  overflow: visible;
-  opacity: 1;
-  animation: logoOverlayOut 0.35s ease forwards;
-  animation-delay: 2.55s;
+.logo-piece-v {
+  z-index: 1;
+  clip-path: inset(1% 86.5% 1% 0);
+  -webkit-mask-image: linear-gradient(to top, #000, #000);
+  mask-image: linear-gradient(to top, #000, #000);
+  -webkit-mask-size: 100% 0%;
+  mask-size: 100% 0%;
+  -webkit-mask-position: left bottom;
+  mask-position: left bottom;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: logoVReveal 0.7s cubic-bezier(0.33, 1, 0.32, 1) forwards;
 }
 
-.logo-wrap--static .logo-final {
-  position: relative;
-  animation: none;
-  opacity: 1;
+.logo-piece-ital {
+  z-index: 2;
+  clip-path: inset(2% 56.5% 2% 11.5%);
+  opacity: 0;
+  animation: logoFadeIn 0.4s ease forwards;
+  animation-delay: 0.55s;
 }
 
-.logo-wrap--static .logo-letters,
-.logo-wrap--static .logo-overlay,
-.logo-wrap--done .logo-letters,
-.logo-wrap--done .logo-overlay {
-  display: none;
-}
-
-.logo-wrap--done .logo-final {
-  opacity: 1;
-  animation: none;
-}
-
-.logo-v {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: logoStrokeDraw 1.05s cubic-bezier(0.45, 0.05, 0.2, 1) forwards;
-}
-
-.logo-wrap--static .logo-v {
-  animation: none;
-  stroke-dashoffset: 0;
-}
-
-.logo-dot-slot {
-  transform-box: fill-box;
-  transform-origin: center;
+.logo-dot-wrap {
+  z-index: 3;
   opacity: 0;
 }
 
-.logo-dot-slot-1 {
-  animation: logoDotGather1 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: 0.95s;
+.logo-dot-wrap-1 {
+  animation: logoDot1 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.78s;
 }
 
-.logo-dot-slot-2 {
-  animation: logoDotGather2 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: 1.08s;
+.logo-dot-wrap-2 {
+  animation: logoDot2 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.9s;
 }
 
-.logo-dot-slot-3 {
-  animation: logoDotGather3 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: 1.21s;
+.logo-dot-wrap-3 {
+  animation: logoDot3 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 1.02s;
 }
 
-.logo-dot-slot-4 {
-  animation: logoDotGather4 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: 1.34s;
+.logo-dot-wrap-4 {
+  animation: logoDot4 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 1.14s;
 }
 
-.logo-wrap--static .logo-dot-slot {
-  animation: none;
-  opacity: 1;
-  transform: none;
+.logo-dot-wrap-1 .logo-piece-dot {
+  clip-path: circle(2.5% at 39.2% 30.5%);
 }
 
-.logo-c-arc {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  opacity: 0.35;
-  animation:
-    logoCArcDraw 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards,
-    logoCArcSolid 0.35s ease forwards;
-  animation-delay: 1.55s, 2.05s;
+.logo-dot-wrap-2 .logo-piece-dot {
+  clip-path: circle(2.5% at 38.2% 48.5%);
 }
 
-.logo-wrap--static .logo-c-arc {
-  animation: none;
-  stroke-dashoffset: 0;
-  opacity: 1;
+.logo-dot-wrap-3 .logo-piece-dot {
+  clip-path: circle(2.5% at 38.8% 65%);
+}
+
+.logo-dot-wrap-4 .logo-piece-dot {
+  clip-path: circle(2.5% at 43.2% 76%);
+}
+
+.logo-piece-c {
+  z-index: 4;
+  clip-path: inset(2% 39.5% 2% 41.5%);
+  opacity: 0;
+  animation: logoFadeIn 0.45s ease forwards;
+  animation-delay: 1.28s;
+}
+
+.logo-piece-ap {
+  z-index: 5;
+  clip-path: inset(2% 1.5% 2% 63.5%);
+  opacity: 0;
+  animation: logoFadeIn 0.4s ease forwards;
+  animation-delay: 1.42s;
 }
 
 .logo-connector {
+  z-index: 6;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.logo-connector-path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   opacity: 0;
   animation:
-    logoStrokeDraw 0.55s ease-out forwards,
-    logoConnectorPulse 0.45s ease-out forwards;
-  animation-delay: 2.15s, 2.55s;
+    logoConnDraw 0.45s ease-out forwards,
+    logoConnFade 0.35s ease forwards;
+  animation-delay: 1.55s, 1.75s;
 }
 
-.logo-wrap--static .logo-connector {
+.logo-wrap--static .logo-piece-full {
+  position: relative;
+  opacity: 1;
+  animation: none;
+}
+
+.logo-wrap--static .logo-piece:not(.logo-piece-full),
+.logo-wrap--static .logo-dot-wrap,
+.logo-wrap--static .logo-connector,
+.logo-wrap--done .logo-piece:not(.logo-piece-full),
+.logo-wrap--done .logo-dot-wrap,
+.logo-wrap--done .logo-connector {
   display: none;
 }
 
-.logo-connect-node {
-  fill: url(#logo-grad);
-  opacity: 0;
-  transform-origin: center;
-  transform-box: fill-box;
-  animation: logoNodePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+.logo-wrap--done .logo-piece-full {
+  opacity: 1;
+  animation: none;
 }
 
-.logo-connect-node-v {
-  animation-delay: 2.5s;
+@keyframes logoVReveal {
+  to {
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
 }
 
-.logo-connect-node-c {
-  animation-delay: 2.62s;
-}
-
-.logo-wrap--static .logo-connect-node {
-  display: none;
-}
-
-@keyframes logoFinalReveal {
+@keyframes logoFadeIn {
   from {
     opacity: 0;
   }
@@ -243,116 +240,10 @@ body {
   }
 }
 
-@keyframes logoLettersIn {
+@keyframes logoFullIn {
   from {
     opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes logoOverlayOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@keyframes logoStrokeDraw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes logoDotGather1 {
-  from {
-    opacity: 0;
-    transform: translate(-220px, 120px) scale(0.15);
-  }
-  70% {
-    opacity: 1;
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-}
-
-@keyframes logoDotGather2 {
-  from {
-    opacity: 0;
-    transform: translate(180px, -100px) scale(0.15);
-  }
-  70% {
-    opacity: 1;
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-}
-
-@keyframes logoDotGather3 {
-  from {
-    opacity: 0;
-    transform: translate(200px, 90px) scale(0.15);
-  }
-  70% {
-    opacity: 1;
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-}
-
-@keyframes logoDotGather4 {
-  from {
-    opacity: 0;
-    transform: translate(-160px, -70px) scale(0.15);
-  }
-  70% {
-    opacity: 1;
-  }
-  to {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-}
-
-@keyframes logoCArcDraw {
-  to {
-    stroke-dashoffset: 0;
-    opacity: 1;
-  }
-}
-
-@keyframes logoCArcSolid {
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes logoConnectorPulse {
-  0% {
-    opacity: 0.85;
-    stroke-width: 3;
-  }
-  50% {
-    opacity: 1;
-    stroke-width: 4;
-  }
-  100% {
-    opacity: 0.5;
-    stroke-width: 3;
-  }
-}
-
-@keyframes logoNodePop {
-  from {
-    opacity: 0;
-    transform: scale(0);
+    transform: scale(0.992);
   }
   to {
     opacity: 1;
@@ -360,36 +251,80 @@ body {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .logo-v,
-  .logo-c-arc,
-  .logo-connector,
-  .logo-dot-slot,
-  .logo-connect-node,
-  .logo-final,
-  .logo-letters,
-  .logo-overlay {
-    animation: none !important;
-  }
-
-  .logo-v,
-  .logo-c-arc {
+@keyframes logoConnDraw {
+  to {
     stroke-dashoffset: 0;
+    opacity: 0.45;
   }
+}
 
-  .logo-dot-slot {
+@keyframes logoConnFade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes logoDot1 {
+  from {
+    opacity: 0;
+    transform: translate(-22%, 16%) scale(0.35);
+  }
+  to {
     opacity: 1;
     transform: none;
   }
+}
 
-  .logo-letters,
-  .logo-overlay {
+@keyframes logoDot2 {
+  from {
+    opacity: 0;
+    transform: translate(20%, -14%) scale(0.35);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes logoDot3 {
+  from {
+    opacity: 0;
+    transform: translate(18%, 12%) scale(0.35);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes logoDot4 {
+  from {
+    opacity: 0;
+    transform: translate(-16%, -10%) scale(0.35);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-piece,
+  .logo-dot-wrap,
+  .logo-connector-path {
+    animation: none !important;
+  }
+
+  .logo-piece:not(.logo-piece-full),
+  .logo-dot-wrap,
+  .logo-connector {
     display: none;
   }
 
-  .logo-final {
+  .logo-piece-full {
     opacity: 1;
     position: relative;
+    transform: none;
   }
 }
 
