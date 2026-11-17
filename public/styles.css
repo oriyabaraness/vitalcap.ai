@@ -420,6 +420,184 @@ body {
   width: 100%;
 }
 
+.cover-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+  gap: clamp(1.5rem, 4vw, 2.75rem);
+  align-items: center;
+  width: 100%;
+}
+
+.cover-hero__brand {
+  min-width: 0;
+}
+
+.cover-hero__brand .cover-logo {
+  width: min(100%, var(--cover-logo-w));
+}
+
+/* Hero: animated BCP workflow (product story, not generic AI) */
+.bcp-workflow {
+  margin: 0;
+  width: 100%;
+  max-width: 420px;
+  justify-self: end;
+}
+
+.bcp-workflow__caption {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vc-muted);
+}
+
+.bcp-workflow__panel {
+  position: relative;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+  padding: 1.15rem 0.65rem 1rem;
+}
+
+.bcp-workflow__wires {
+  position: absolute;
+  left: 0.65rem;
+  right: 0.65rem;
+  top: 50%;
+  height: 200px;
+  width: calc(100% - 1.3rem);
+  transform: translateY(-58%);
+  pointer-events: none;
+}
+
+.bcp-wire {
+  fill: none;
+  stroke: url(#bcp-wire-grad);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.5;
+}
+
+.bcp-workflow__panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.04), rgba(168, 85, 247, 0.05));
+}
+
+.bcp-workflow__steps {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.35rem;
+}
+
+.bcp-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.2rem;
+  border-radius: 8px;
+  opacity: 0.55;
+  transition: opacity 0.35s ease, box-shadow 0.35s ease;
+}
+
+.bcp-step__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: var(--vc-blue-dark);
+}
+
+.bcp-step__title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--vc-navy);
+}
+
+.bcp-step__sub {
+  font-size: 0.62rem;
+  line-height: 1.25;
+  color: var(--vc-muted);
+  max-width: 5.5rem;
+}
+
+.bcp-step--detect .bcp-step__ping {
+  animation: bcpPing 2.8s ease-out infinite;
+  animation-delay: 0.65s;
+}
+
+.bcp-check {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* Workflow timeline — ~2.8s loop */
+.bcp-workflow .bcp-step--map,
+.bcp-workflow .bcp-step--detect,
+.bcp-workflow .bcp-step--assess,
+.bcp-workflow .bcp-step--act {
+  animation: bcpStepActive 2.8s ease forwards infinite;
+}
+
+.bcp-workflow .bcp-step--map { animation-delay: 0s; }
+.bcp-workflow .bcp-step--detect { animation-delay: 0.7s; }
+.bcp-workflow .bcp-step--assess { animation-delay: 1.4s; }
+.bcp-workflow .bcp-step--act { animation-delay: 2.1s; }
+
+.bcp-workflow .bcp-wire--1 { animation: bcpWireDraw 2.8s ease forwards infinite; animation-delay: 0.35s; }
+.bcp-workflow .bcp-wire--2 { animation: bcpWireDraw 2.8s ease forwards infinite; animation-delay: 1.05s; }
+.bcp-workflow .bcp-wire--3 { animation: bcpWireDraw 2.8s ease forwards infinite; animation-delay: 1.75s; }
+
+.bcp-workflow .bcp-step--act .bcp-check {
+  animation: bcpCheckDraw 2.8s ease forwards infinite;
+  animation-delay: 2.1s;
+}
+
+@keyframes bcpStepActive {
+  0%, 24% { opacity: 0.55; box-shadow: none; }
+  25%, 49% {
+    opacity: 1;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15), 0 8px 20px rgba(37, 99, 235, 0.08);
+  }
+  50%, 100% { opacity: 0.55; box-shadow: none; }
+}
+
+@keyframes bcpWireDraw {
+  0%, 24% { stroke-dashoffset: 1; opacity: 0.25; }
+  40%, 70% { stroke-dashoffset: 0; opacity: 0.85; }
+  85%, 100% { stroke-dashoffset: 0; opacity: 0.35; }
+}
+
+@keyframes bcpCheckDraw {
+  0%, 70% { stroke-dashoffset: 1; }
+  88%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes bcpPing {
+  0%, 100% { opacity: 0.3; transform: scale(0.85); }
+  35% { opacity: 1; transform: scale(1); }
+  55% { opacity: 0.4; transform: scale(0.9); }
+}
+
 .cover-date {
   color: var(--vc-blue);
   font-size: 0.85rem;
@@ -800,6 +978,23 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .radar::after { animation: none; }
+
+  .bcp-workflow .bcp-step,
+  .bcp-workflow .bcp-wire,
+  .bcp-workflow .bcp-check,
+  .bcp-step__ping {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  .bcp-step--act .bcp-check {
+    stroke-dashoffset: 0;
+  }
+
+  .bcp-wire {
+    stroke-dashoffset: 0;
+    opacity: 0.6;
+  }
 }
 
 .threat-card p {
@@ -1027,6 +1222,19 @@ body {
 }
 
 @media (max-width: 960px) {
+  .cover-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .bcp-workflow {
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .bcp-step__sub {
+    font-size: 0.58rem;
+  }
+
   .deck { flex-direction: column; }
   .deck-nav {
     width: 100%;

@@ -38,19 +38,102 @@
           <div class="cover-bg"></div>
           <div class="cover-inner">
             <p class="cover-date">Investor Pitch · 2026</p>
-            <h1 class="cover-title">
-              <img
-                src="logo.png"
-                alt="VitalCap"
-                class="brand-logo cover-logo"
-                width="1024"
-                height="443"
-              />
-            </h1>
-            <p class="cover-tagline">
-              AI-powered business continuity that sees the threat <strong>before</strong> it reaches your
-              critical operations.
-            </p>
+            <div class="cover-hero">
+              <div class="cover-hero__brand">
+                <h1 class="cover-title">
+                  <img
+                    src="logo.png"
+                    alt="VitalCap"
+                    class="brand-logo cover-logo"
+                    width="1024"
+                    height="443"
+                  />
+                </h1>
+                <p class="cover-tagline">
+                  AI-powered business continuity that sees the threat <strong>before</strong> it reaches your
+                  critical operations.
+                </p>
+              </div>
+              <figure class="bcp-workflow" aria-label="Business continuity workflow">
+                <figcaption class="bcp-workflow__caption">Continuous BCP workflow</figcaption>
+                <div class="bcp-workflow__panel">
+                  <svg class="bcp-workflow__wires" viewBox="0 0 360 200" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="bcp-wire-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#2563eb" />
+                        <stop offset="100%" stop-color="#7c3aed" />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      class="bcp-wire bcp-wire--1"
+                      pathLength="1"
+                      d="M 88 100 H 132"
+                    />
+                    <path
+                      class="bcp-wire bcp-wire--2"
+                      pathLength="1"
+                      d="M 178 100 H 222"
+                    />
+                    <path
+                      class="bcp-wire bcp-wire--3"
+                      pathLength="1"
+                      d="M 268 100 H 312"
+                    />
+                  </svg>
+                  <ol class="bcp-workflow__steps">
+                    <li class="bcp-step bcp-step--map">
+                      <span class="bcp-step__icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                          <rect x="4" y="6" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5" />
+                          <path d="M8 12h12M8 16h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                      </span>
+                      <span class="bcp-step__title">Map</span>
+                      <span class="bcp-step__sub">Apps · RTO · RPO · MAD</span>
+                    </li>
+                    <li class="bcp-step bcp-step--detect">
+                      <span class="bcp-step__icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                          <circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.5" />
+                          <path d="M14 5v4M14 19v4M5 14h4M19 14h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                          <circle class="bcp-step__ping" cx="14" cy="14" r="3" fill="currentColor" />
+                        </svg>
+                      </span>
+                      <span class="bcp-step__title">Detect</span>
+                      <span class="bcp-step__sub">Threats to SPoF</span>
+                    </li>
+                    <li class="bcp-step bcp-step--assess">
+                      <span class="bcp-step__icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                          <path d="M6 20V8h4v12H6zm6-8v8h4V12h-4zm6 4v4h4v-4h-4z" fill="currentColor" opacity="0.35" />
+                          <path d="M6 20h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                          <path d="M18 8v6" stroke="var(--vc-orange)" stroke-width="2" stroke-linecap="round" class="bcp-gap-line" />
+                        </svg>
+                      </span>
+                      <span class="bcp-step__title">Assess</span>
+                      <span class="bcp-step__sub">MAD vs vendor RTO</span>
+                    </li>
+                    <li class="bcp-step bcp-step--act">
+                      <span class="bcp-step__icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                          <path
+                            class="bcp-check"
+                            pathLength="1"
+                            d="M7 14l5 5 9-11"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span class="bcp-step__title">Act</span>
+                      <span class="bcp-step__sub">Timed recovery plan</span>
+                    </li>
+                  </ol>
+                </div>
+              </figure>
+            </div>
             <hr class="cover-rule" />
             <div class="cover-meta">
               <span>📞 054-8222991</span>
