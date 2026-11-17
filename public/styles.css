@@ -420,6 +420,18 @@ body {
   width: 100%;
 }
 
+.cover-inner--solo {
+  align-items: center;
+  justify-content: center;
+  min-height: min(92vh, 820px);
+  padding: 2rem;
+}
+
+.cover-inner--solo .cover-logo {
+  margin: 0;
+  width: min(92vw, var(--cover-logo-w));
+}
+
 .cover-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
@@ -437,11 +449,23 @@ body {
 }
 
 /* Hero: animated BCP workflow (product story, not generic AI) */
+.bcp-workflow-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 1.75rem;
+  width: 100%;
+}
+
 .bcp-workflow {
   margin: 0;
   width: 100%;
   max-width: 420px;
   justify-self: end;
+}
+
+.bcp-workflow--promo {
+  max-width: min(560px, 100%);
+  justify-self: center;
 }
 
 .bcp-workflow__caption {
@@ -1544,14 +1568,51 @@ body {
   text-decoration: none;
 }
 
-@media (max-width: 960px) {
-  .cover-hero {
-    grid-template-columns: 1fr;
-  }
+.slide-contact {
+  padding-bottom: 1.5rem;
+}
 
-  .bcp-workflow {
+.site-footer {
+  margin-top: 0;
+  padding: 1.25rem 3rem 2rem;
+  border-top: 2px solid var(--vc-blue);
+  background: var(--vc-bg);
+  text-align: center;
+}
+
+.site-footer__brand {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--vc-muted);
+}
+
+.site-footer__meta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--vc-blue);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.site-footer__meta a {
+  color: var(--vc-blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-footer__meta a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 960px) {
+  .bcp-workflow--promo {
     max-width: none;
-    justify-self: stretch;
   }
 
   .bcp-step__sub {
