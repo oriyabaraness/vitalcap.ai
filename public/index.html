@@ -43,6 +43,25 @@
                 <div class="logo-stage">
                   <svg class="logo-defs" width="0" height="0" aria-hidden="true">
                     <defs>
+                      <linearGradient
+                        id="logo-link-grad"
+                        gradientUnits="userSpaceOnUse"
+                        x1="372"
+                        y1="118"
+                        x2="458"
+                        y2="338"
+                      >
+                        <stop offset="0%" stop-color="#38bdf8" />
+                        <stop offset="45%" stop-color="#6366f1" />
+                        <stop offset="100%" stop-color="#a855f7" />
+                      </linearGradient>
+                      <filter id="logo-glow" x="-30%" y="-30%" width="160%" height="160%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
+                        <feMerge>
+                          <feMergeNode in="blur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
                       <mask
                         id="logo-mask-v"
                         maskUnits="userSpaceOnUse"
@@ -55,7 +74,7 @@
                         <path
                           class="logo-mask-v-path"
                           pathLength="1"
-                          d="M 32 404 L 58 376 L 100 22 L 116 12 L 158 74"
+                          d="M 34 404 L 60 378 L 102 24 L 118 14 L 160 76"
                           fill="none"
                           stroke="white"
                           stroke-width="58"
@@ -113,27 +132,48 @@
                       pathLength="1"
                       d="M 410 126 Q 382 172 395 218"
                       fill="none"
-                      stroke="#8b5cf6"
-                      stroke-width="4"
+                      stroke="url(#logo-link-grad)"
+                      stroke-width="5"
                       stroke-linecap="round"
+                      filter="url(#logo-glow)"
                     />
                     <path
                       class="logo-link logo-link-2"
                       pathLength="1"
                       d="M 395 218 Q 376 258 400 292"
                       fill="none"
-                      stroke="#8b5cf6"
-                      stroke-width="4"
+                      stroke="url(#logo-link-grad)"
+                      stroke-width="5"
                       stroke-linecap="round"
+                      filter="url(#logo-glow)"
                     />
                     <path
                       class="logo-link logo-link-3"
                       pathLength="1"
                       d="M 400 292 Q 428 318 448 336"
                       fill="none"
-                      stroke="#8b5cf6"
-                      stroke-width="4"
+                      stroke="url(#logo-link-grad)"
+                      stroke-width="5"
                       stroke-linecap="round"
+                      filter="url(#logo-glow)"
+                    />
+                  </svg>
+                  <svg
+                    class="logo-v-glow"
+                    viewBox="0 0 1024 443"
+                    preserveAspectRatio="xMidYMid meet"
+                    aria-hidden="true"
+                  >
+                    <path
+                      class="logo-v-glow-path"
+                      pathLength="1"
+                      d="M 34 404 L 60 378 L 102 24 L 118 14 L 160 76"
+                      fill="none"
+                      stroke="url(#logo-link-grad)"
+                      stroke-width="6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      filter="url(#logo-glow)"
                     />
                   </svg>
                   <img
