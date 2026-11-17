@@ -39,7 +39,108 @@
           <div class="cover-inner">
             <p class="cover-date">Investor Pitch · 2026</p>
             <h1 class="cover-title">
-              <img src="logo.png" alt="VitalCap" class="brand-logo cover-logo" width="480" height="182" />
+              <div id="cover-logo" class="logo-wrap" aria-label="VitalCap">
+                <svg
+                  class="logo-anim cover-logo-svg"
+                  viewBox="0 0 520 148"
+                  width="480"
+                  height="182"
+                  role="img"
+                  aria-labelledby="logo-title"
+                >
+                  <title id="logo-title">VitalCap</title>
+                  <defs>
+                    <linearGradient id="logo-grad" x1="0%" y1="100%" x2="0%" y2="0%">
+                      <stop offset="0%" stop-color="#2563eb" />
+                      <stop offset="55%" stop-color="#4f46e5" />
+                      <stop offset="100%" stop-color="#a855f7" />
+                    </linearGradient>
+                    <linearGradient id="logo-grad-conn" x1="0%" y1="50%" x2="100%" y2="50%">
+                      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.9" />
+                      <stop offset="100%" stop-color="#2563eb" stop-opacity="0.35" />
+                    </linearGradient>
+                  </defs>
+
+                  <text
+                    class="logo-word"
+                    x="78"
+                    y="112"
+                    font-size="76"
+                    font-weight="700"
+                    font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
+                  >
+                    ital
+                  </text>
+                  <text
+                    class="logo-word"
+                    x="358"
+                    y="112"
+                    font-size="76"
+                    font-weight="700"
+                    font-family="'Segoe UI', system-ui, -apple-system, sans-serif"
+                  >
+                    ap
+                  </text>
+
+                  <path
+                    id="logo-v"
+                    class="logo-v"
+                    pathLength="1"
+                    d="M 8 118 L 36 24 L 44 14 L 58 10 L 72 36"
+                    fill="none"
+                    stroke="url(#logo-grad)"
+                    stroke-width="13"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+
+                  <g class="logo-c-group" transform="translate(0,0)">
+                    <g class="logo-dot-slot logo-dot-slot-1">
+                      <circle class="logo-dot" cx="268" cy="48" r="7" fill="url(#logo-grad)" />
+                    </g>
+                    <g class="logo-dot-slot logo-dot-slot-2">
+                      <circle class="logo-dot" cx="252" cy="78" r="7" fill="url(#logo-grad)" />
+                    </g>
+                    <g class="logo-dot-slot logo-dot-slot-3">
+                      <circle class="logo-dot" cx="262" cy="108" r="7" fill="url(#logo-grad)" />
+                    </g>
+                    <g class="logo-dot-slot logo-dot-slot-4">
+                      <circle class="logo-dot" cx="288" cy="128" r="7" fill="url(#logo-grad)" />
+                    </g>
+
+                    <path
+                      class="logo-c-arc"
+                      pathLength="1"
+                      d="M 308 40 A 48 48 0 1 0 308 126"
+                      fill="none"
+                      stroke="url(#logo-grad)"
+                      stroke-width="13"
+                      stroke-linecap="round"
+                    />
+                  </g>
+
+                  <path
+                    class="logo-connector"
+                    pathLength="1"
+                    d="M 68 44 Q 168 52 252 52"
+                    fill="none"
+                    stroke="url(#logo-grad-conn)"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                  />
+
+                  <circle class="logo-connect-node logo-connect-node-v" cx="68" cy="44" r="5" />
+                  <circle class="logo-connect-node logo-connect-node-c" cx="252" cy="52" r="5" />
+                </svg>
+                <img
+                  src="logo.png"
+                  alt=""
+                  class="brand-logo cover-logo cover-logo-fallback"
+                  width="480"
+                  height="182"
+                  aria-hidden="true"
+                />
+              </div>
             </h1>
             <p class="cover-tagline">
               AI-powered business continuity that sees the threat <strong>before</strong> it reaches your
@@ -485,6 +586,7 @@
     </div>
 
     <script src="data.js"></script>
+    <script src="logo-intro.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
