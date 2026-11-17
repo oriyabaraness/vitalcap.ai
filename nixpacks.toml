@@ -1,0 +1,6 @@
+# Railway: explicit Node start (no build step)
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[start]
+cmd = "node server.js"
