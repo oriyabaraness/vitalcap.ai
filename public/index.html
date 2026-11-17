@@ -19,7 +19,7 @@
           <a href="#whynow" class="deck-link">Why Now</a>
           <a href="#incidents" class="deck-link">Incident Lab</a>
           <a href="#packages" class="deck-link">How It Works</a>
-          <a href="#risk" class="deck-link">Live Calculator</a>
+          <a href="#risk" class="deck-link">Product Demo</a>
           <a href="#threats" class="deck-link">Threat Demo</a>
           <a href="#recovery" class="deck-link">Recovery Plan</a>
           <a href="#market" class="deck-link">Market</a>
@@ -238,46 +238,115 @@
           <p class="fine-print">RTO = how fast an app must recover · RPO = how much data you can lose · MAD = how long the business process can be down. Rule: an app’s RTO must fit inside the MAD of every process that relies on it. Figures are illustrative.</p>
         </section>
 
-        <!-- 6. RISK CALCULATOR -->
-        <section id="risk" class="slide slide-wide">
-          <p class="eyebrow">Live calculator</p>
-          <h2 class="slide-title">Try it: change the numbers and watch the risk move</h2>
-          <div class="risk-layout">
-            <div class="risk-chart-wrap">
-              <div class="risk-legend">
-                <span><i class="swatch swatch-4"></i>4 hours</span>
-                <span><i class="swatch swatch-24"></i>24 hours</span>
-                <span><i class="swatch swatch-48"></i>48 hours</span>
-              </div>
-              <div id="risk-bars" class="risk-bars"></div>
-              <p id="gap-alert" class="gap-alert" role="status"></p>
-            </div>
-            <div class="risk-controls">
-              <p class="slide-body compact">
-                VitalCap weighs each business line’s applications and dependencies, then scores impact over
-                time so the MAD and RTO/RPO targets reflect every angle of criticality.
-              </p>
-              <form id="sim-form" class="sim-form">
-                <label>
-                  Business line
-                  <select id="sim-dept"></select>
-                </label>
-                <div class="sim-row">
-                  <label>RTO (h)<input type="number" id="sim-rto" min="0" step="1" /></label>
-                  <label>RPO (h)<input type="number" id="sim-rpo" min="0" step="1" /></label>
-                  <label>MAD (h)<input type="number" id="sim-mad" min="0" step="1" /></label>
+        <!-- 6. PRODUCT DEMO -->
+        <section id="risk" class="slide slide-wide slide-demo">
+          <p class="eyebrow">Product demo</p>
+          <h2 class="slide-title">Change recovery time — watch the BIA and plan update instantly</h2>
+          <span class="demo-badge">Illustrative</span>
+          <div class="product-demo">
+            <div class="product-demo__main">
+              <div class="demo-process-card">
+                <p class="demo-kicker">Critical business process</p>
+                <form id="sim-form" class="sim-form sim-form--demo">
+                  <label class="demo-process-select">
+                    <select id="sim-dept" aria-label="Critical business process"></select>
+                  </label>
+                </form>
+                <dl class="demo-deps">
+                  <div>
+                    <dt>Supporting application</dt>
+                    <dd id="demo-app-name">—</dd>
+                  </div>
+                  <div class="demo-metric-pair">
+                    <div class="demo-metric">
+                      <dt>Application RTO</dt>
+                      <dd><span id="demo-rto-readout">—</span> hours</dd>
+                    </div>
+                    <div class="demo-metric">
+                      <dt>Maximum allowable downtime</dt>
+                      <dd><span id="demo-mad-readout">—</span> hours</dd>
+                    </div>
+                  </div>
+                </dl>
+                <div class="rto-mad-compare" aria-hidden="true">
+                  <div class="rto-mad-compare__track">
+                    <span id="demo-mad-marker" class="rto-mad-compare__mad"></span>
+                    <span id="demo-rto-bar" class="rto-mad-compare__rto"></span>
+                  </div>
+                  <div class="rto-mad-compare__labels">
+                    <span>0h</span>
+                    <span>MAD</span>
+                    <span>RTO</span>
+                  </div>
                 </div>
-                <fieldset class="sim-impacts">
-                  <legend>Impact ratings (0–8)</legend>
-                  <label>Reputational<input type="range" id="sim-rep" min="0" max="8" step="1" value="4" /><output id="out-rep">4</output></label>
-                  <label>Legal<input type="range" id="sim-legal" min="0" max="8" step="1" value="4" /><output id="out-legal">4</output></label>
-                  <label>Regulatory<input type="range" id="sim-reg" min="0" max="8" step="1" value="8" /><output id="out-reg">8</output></label>
-                  <label>Internal<input type="range" id="sim-internal" min="0" max="8" step="1" value="4" /><output id="out-internal">4</output></label>
-                </fieldset>
-              </form>
-              <p id="mad-recommendation" class="mad-callout"></p>
+              </div>
+
+              <div id="gap-panel" class="gap-panel" role="status" aria-live="polite"></div>
+
+              <div class="bia-panel">
+                <h3 class="bia-panel__title">BIA preview</h3>
+                <div class="risk-legend">
+                  <span><i class="swatch swatch-4"></i>4 hours</span>
+                  <span><i class="swatch swatch-24"></i>24 hours</span>
+                  <span><i class="swatch swatch-48"></i>48 hours</span>
+                </div>
+                <div id="risk-bars" class="risk-bars"></div>
+              </div>
+
+              <div class="demo-recovery-wrap">
+                <h3 class="bia-panel__title">Recovery plan (generated)</h3>
+                <div class="demo-recovery-table-wrap">
+                  <table class="recovery-table demo-recovery-table">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Client risk</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="demo-recovery-rows"></tbody>
+                  </table>
+                </div>
+              </div>
             </div>
+
+            <aside class="product-demo__controls">
+              <p class="slide-body compact">
+                VitalCap ties each process’s <strong>MAD</strong> to its critical application’s <strong>RTO</strong>,
+                scores business impact, and rewrites the playbook when the math doesn’t close.
+              </p>
+              <fieldset class="demo-sliders" form="sim-form">
+                <legend>Recovery objectives</legend>
+                <label class="demo-slider">
+                  Application RTO
+                  <input type="range" id="sim-rto" min="0" max="48" step="1" />
+                  <output id="out-rto">10</output>
+                  <span class="demo-slider-unit">hours</span>
+                </label>
+                <label class="demo-slider">
+                  Process MAD
+                  <input type="range" id="sim-mad" min="1" max="72" step="1" />
+                  <output id="out-mad">8</output>
+                  <span class="demo-slider-unit">hours</span>
+                </label>
+                <label class="demo-slider demo-slider--sub">
+                  Data loss tolerance (RPO)
+                  <input type="range" id="sim-rpo" min="0" max="24" step="1" />
+                  <output id="out-rpo">1</output>
+                  <span class="demo-slider-unit">hours</span>
+                </label>
+              </fieldset>
+              <fieldset class="sim-impacts">
+                <legend>Impact ratings (0–8)</legend>
+                <label>Reputational<input type="range" id="sim-rep" min="0" max="8" step="1" value="4" /><output id="out-rep">4</output></label>
+                <label>Legal<input type="range" id="sim-legal" min="0" max="8" step="1" value="4" /><output id="out-legal">4</output></label>
+                <label>Regulatory<input type="range" id="sim-reg" min="0" max="8" step="1" value="8" /><output id="out-reg">8</output></label>
+                <label>Internal<input type="range" id="sim-internal" min="0" max="8" step="1" value="4" /><output id="out-internal">4</output></label>
+              </fieldset>
+              <p id="demo-disclaimer" class="fine-print demo-disclaimer"></p>
+            </aside>
           </div>
+          <p id="gap-alert" class="visually-hidden" role="status"></p>
         </section>
 
         <!-- 7. THREAT DEMO -->
@@ -297,7 +366,7 @@
             <div class="recovery-alert">
               <div class="alert-icon" aria-hidden="true">!</div>
               <p id="recovery-warning" class="recovery-warning"></p>
-              <p class="fine-print">Impact scores follow the ratings set in the live calculator.</p>
+              <p class="fine-print">Synced with the Product Demo — change sliders there to refresh this table.</p>
             </div>
             <div class="recovery-table-wrap">
               <table class="recovery-table">

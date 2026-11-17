@@ -252,6 +252,8 @@ function renderThreats() {
     .join("");
 }
 
+const DEMO = DATA.demoProcesses || [];
+
 const sim = {
   dept: document.getElementById("sim-dept"),
   rto: document.getElementById("sim-rto"),
@@ -263,18 +265,38 @@ const sim = {
   internal: document.getElementById("sim-internal"),
 };
 
+function demoIndexFromSelect() {
+  return Number(sim.dept?.value) || 0;
+}
+
+function currentDemo() {
+  return DEMO[demoIndexFromSelect()] || DEMO[0];
+}
+
+function defaultDemoIndex() {
+  const id = DATA.demoDefaultId;
+  const idx = DEMO.findIndex((p) => p.id === id);
+  return idx >= 0 ? idx : 0;
+}
+
 function populateSimDept() {
-  if (!sim.dept) return;
-  sim.dept.innerHTML = DATA.businessLines
-    .map((b, i) => `<option value="${i}">${titleCase(b.dept)}</option>`)
-    .join("");
+  if (!sim.dept || !DEMO.length) return;
+  sim.dept.innerHTML = DEMO.map((p, i) => `<option value="${i}">${p.process}</option>`).join("");
+  sim.dept.value = String(defaultDemoIndex());
 }
 
 function loadDept(index) {
-  const b = DATA.businessLines[index];
-  sim.rto.value = b.rto;
-  sim.rpo.value = b.rpo;
-  sim.mad.value = b.mad;
+  const p = DEMO[index];
+  if (!p || !sim.rto) return;
+  sim.rto.value = p.rto;
+  sim.rpo.value = p.rpo;
+  sim.mad.value = p.mad;
+  if (sim.rep && p.impacts) {
+    sim.rep.value = p.impacts.rep;
+    sim.legal.value = p.impacts.legal;
+    sim.reg.value = p.impacts.reg;
+    sim.internal.value = p.impacts.internal;
+  }
 }
 
 function riskSegment(value, horizonWeight) {
@@ -318,26 +340,61 @@ function renderRiskBars(rep, legal, reg, internal) {
     `<div class="risk-axis"><span>0</span><span>50</span><span>100</span><span>150</span><span>200</span></div>`;
 }
 
-function renderGap(b, rto, rpo, mad) {
-  const el = document.getElementById("gap-alert");
-  if (!el) return;
-  if (rto > mad) {
-    el.className = "gap-alert bad";
-    el.textContent = `⚠ Gap found: ${b.app} needs ${rto}h to recover, but ${titleCase(b.dept)} can only be down for ${mad}h. VitalCap flags this for a faster recovery option.`;
-  } else {
-    el.className = "gap-alert ok";
-    el.textContent = `✓ Covered: ${b.app} recovers in ${rto}h, within the ${mad}h ${titleCase(b.dept)} can tolerate (up to ${rpo}h of data at risk).`;
+function renderGapPanel(p, rto, rpo, mad) {
+  const panel = document.getElementById("gap-panel");
+  const hidden = document.getElementById("gap-alert");
+  const gapHours = rto - mad;
+  const hasGap = gapHours > 0;
+
+  if (panel) {
+    if (hasGap) {
+      panel.className = "gap-panel gap-panel--bad";
+      panel.innerHTML = `
+        <p class="gap-panel__title">Recovery planning gap detected</p>
+        <p class="gap-panel__body">
+          The application’s recovery target exceeds the process’s maximum allowable downtime by
+          <strong>${gapHours} hour${gapHours === 1 ? "" : "s"}</strong>.
+          This dependency requires a shorter recovery target or an alternative continuity strategy.
+        </p>`;
+    } else {
+      panel.className = "gap-panel gap-panel--ok";
+      panel.innerHTML = `
+        <p class="gap-panel__title">Objectives align</p>
+        <p class="gap-panel__body">
+          <strong>${p.app}</strong> RTO (${rto}h) fits inside <strong>${p.process}</strong> MAD (${mad}h).
+          Data loss tolerance (RPO) for this illustration: ${rpo}h.
+        </p>`;
+    }
+  }
+
+  if (hidden) {
+    hidden.textContent = hasGap
+      ? `Gap: ${p.app} RTO ${rto}h exceeds ${p.process} MAD ${mad}h by ${gapHours}h`
+      : `Aligned: RTO ${rto}h within MAD ${mad}h`;
   }
 }
 
-function renderRecoveryTable(b, rep, legal, clientRisk) {
-  const warning = document.getElementById("recovery-warning");
-  const tbody = document.getElementById("recovery-rows");
-  if (!warning || !tbody) return;
+function renderCompareBar(rto, mad) {
+  const scale = Math.max(rto, mad, 1) * 1.15;
+  const rtoBar = document.getElementById("demo-rto-bar");
+  const madMarker = document.getElementById("demo-mad-marker");
+  const rtoOut = document.getElementById("demo-rto-readout");
+  const madOut = document.getElementById("demo-mad-readout");
 
-  warning.textContent = `VitalCap warns that ${b.app} is a critical application for the ${titleCase(b.dept)} team’s core functions.`;
+  if (rtoBar) {
+    rtoBar.style.width = `${(rto / scale) * 100}%`;
+    rtoBar.classList.toggle("rto-mad-compare__rto--over", rto > mad);
+  }
+  if (madMarker) madMarker.style.left = `${(mad / scale) * 100}%`;
+  if (rtoOut) rtoOut.textContent = String(rto);
+  if (madOut) madOut.textContent = String(mad);
+}
 
-  tbody.innerHTML = DATA.recoveryPlan
+function renderRecoveryRows(steps, clientRisk, rep, legal, targetId) {
+  const tbody = document.getElementById(targetId);
+  if (!tbody) return;
+
+  tbody.innerHTML = steps
     .map((step) => {
       const actionText = step.actions.join("; ");
       const prefix = step.automated ? '<span class="auto-tag">Automated</span> ' : "";
@@ -345,18 +402,35 @@ function renderRecoveryTable(b, rep, legal, clientRisk) {
       <tr>
         <td>${step.label}</td>
         <td>${clientRisk}</td>
-        <td>${rep}</td>
-        <td>${legal}</td>
+        ${targetId === "recovery-rows" ? `<td>${rep}</td><td>${legal}</td>` : ""}
         <td>${prefix}<span class="action-main">${actionText}</span></td>
       </tr>`;
     })
     .join("");
 }
 
-function computeSim() {
-  if (!sim.dept) return;
+function renderRecoveryTable(p, rep, legal, clientRisk, rto, mad) {
+  const warning = document.getElementById("recovery-warning");
+  const hasGap = rto > mad;
+  const steps = hasGap ? p.recoveryWhenGap : p.recoveryWhenOk;
 
-  const b = DATA.businessLines[Number(sim.dept.value)];
+  if (warning) {
+    warning.textContent = hasGap
+      ? `VitalCap warns that ${p.app} cannot meet the ${p.process} MAD — recovery plan escalates.`
+      : `${p.app} supports ${p.process} within tolerance; plan stays in monitor mode.`;
+  }
+
+  renderRecoveryRows(steps || [], clientRisk, rep, legal, "demo-recovery-rows");
+
+  const fullPlan = hasGap ? p.recoveryWhenGap : p.recoveryWhenOk;
+  const legacy = fullPlan?.length ? fullPlan : DATA.recoveryPlan;
+  renderRecoveryRows(legacy, clientRisk, rep, legal, "recovery-rows");
+}
+
+function computeSim() {
+  if (!sim.dept || !DEMO.length) return;
+
+  const p = currentDemo();
   const rto = Number(sim.rto.value) || 0;
   const rpo = Number(sim.rpo.value) || 0;
   const mad = Number(sim.mad.value) || 0;
@@ -365,28 +439,36 @@ function computeSim() {
   const reg = Number(sim.reg.value);
   const internal = Number(sim.internal.value);
 
+  const appName = document.getElementById("demo-app-name");
+  if (appName) appName.textContent = p.app;
+
+  const outRto = document.getElementById("out-rto");
+  const outMad = document.getElementById("out-mad");
+  const outRpo = document.getElementById("out-rpo");
+  if (outRto) outRto.textContent = rto;
+  if (outMad) outMad.textContent = mad;
+  if (outRpo) outRpo.textContent = rpo;
+
   document.getElementById("out-rep").textContent = rep;
   document.getElementById("out-legal").textContent = legal;
   document.getElementById("out-reg").textContent = reg;
   document.getElementById("out-internal").textContent = internal;
 
+  const disclaimer = document.getElementById("demo-disclaimer");
+  if (disclaimer && DATA.demoDisclaimer) disclaimer.textContent = DATA.demoDisclaimer;
+
   const clientRisk = Math.max(rep, legal, reg);
   renderRiskBars(rep, legal, reg, internal);
-  renderGap(b, rto, rpo, mad);
-
-  const madEl = document.getElementById("mad-recommendation");
-  if (madEl) {
-    madEl.textContent = `Recommended MAD for ${titleCase(b.dept)}: ${mad} hours`;
-  }
-
-  renderRecoveryTable(b, rep, legal, clientRisk);
+  renderCompareBar(rto, mad);
+  renderGapPanel(p, rto, rpo, mad);
+  renderRecoveryTable(p, rep, legal, clientRisk, rto, mad);
 }
 
-if (sim.dept) {
+if (sim.dept && DEMO.length) {
   populateSimDept();
-  loadDept(0);
+  loadDept(defaultDemoIndex());
   sim.dept.addEventListener("change", () => {
-    loadDept(Number(sim.dept.value));
+    loadDept(demoIndexFromSelect());
     computeSim();
   });
   [sim.rto, sim.rpo, sim.mad, sim.rep, sim.legal, sim.reg, sim.internal].forEach((el) =>

@@ -105,6 +105,129 @@ window.VITALCAP_DATA = {
       ],
     },
   ],
+  demoDefaultId: "payment",
+  demoDisclaimer:
+    "Try adjusting the sliders. This is a simplified illustration of one recovery-objective consistency check, not a complete BIA.",
+  demoProcesses: [
+    {
+      id: "payment",
+      process: "Payment Processing",
+      app: "Payment Gateway",
+      rto: 10,
+      rpo: 1,
+      mad: 8,
+      impacts: { rep: 6, legal: 7, reg: 8, internal: 5 },
+      recoveryWhenGap: [
+        {
+          label: "0–2 h",
+          actions: [
+            "Switch to manual payment capture queue",
+            "Notify card networks and key merchants of degraded processing",
+          ],
+          automated: true,
+        },
+        {
+          label: "2–4 h",
+          actions: [
+            "Fail over to secondary gateway region (target RTO ≤ MAD)",
+            "Escalate regulatory incident per PSD2 / DORA playbooks",
+          ],
+        },
+        {
+          label: "4–8 h",
+          actions: [
+            "Stand up alternative acquirer routing for critical merchants",
+            "Daily reconciliation against gateway settlement files",
+          ],
+        },
+        {
+          label: "8–24 h",
+          actions: [
+            "Renegotiate vendor RTO or add warm standby gateway",
+            "Board-level review of payment impact tolerance",
+          ],
+        },
+      ],
+      recoveryWhenOk: [
+        {
+          label: "0–2 h",
+          actions: ["Monitor gateway health dashboards", "Confirm runbook owner on call"],
+          automated: true,
+        },
+        {
+          label: "2–8 h",
+          actions: ["Routine settlement checks", "No customer comms required"],
+        },
+        {
+          label: "8–24 h",
+          actions: ["Include gateway in next tabletop exercise"],
+        },
+      ],
+    },
+    {
+      id: "treasury",
+      process: "Treasury & settlements",
+      app: "BlackLine Transaction Matching",
+      rto: 2,
+      rpo: 1,
+      mad: 4,
+      impacts: { rep: 4, legal: 6, reg: 7, internal: 4 },
+      recoveryWhenGap: [
+        {
+          label: "0–2 h",
+          actions: ["Manual reconciliation spreadsheet", "Alert finance controller"],
+          automated: true,
+        },
+        {
+          label: "2–4 h",
+          actions: ["Restore BlackLine or shift to backup matching tool"],
+        },
+      ],
+      recoveryWhenOk: [
+        { label: "0–4 h", actions: ["Standard monitoring", "Patch window as scheduled"] },
+      ],
+    },
+    {
+      id: "sales",
+      process: "Customer order capture",
+      app: "Salesforce Einstein",
+      rto: 2,
+      rpo: 1,
+      mad: 4,
+      impacts: { rep: 5, legal: 3, reg: 4, internal: 4 },
+      recoveryWhenGap: [
+        {
+          label: "0–2 h",
+          actions: ["Backup CRM export", "AI-drafted client comms"],
+          automated: true,
+        },
+        { label: "2–4 h", actions: ["Fail over to alternative sales platform"] },
+      ],
+      recoveryWhenOk: [
+        { label: "0–4 h", actions: ["Continue selling on primary CRM", "Routine pipeline sync"] },
+      ],
+    },
+    {
+      id: "hr-payroll",
+      process: "Payroll disbursement",
+      app: "Workday HCM",
+      rto: 24,
+      rpo: 4,
+      mad: 72,
+      impacts: { rep: 5, legal: 8, reg: 6, internal: 7 },
+      recoveryWhenGap: [
+        {
+          label: "0–4 h",
+          actions: ["Identify missed pay run cutoff", "Legal review of labor obligations"],
+          automated: true,
+        },
+        { label: "4–24 h", actions: ["Manual payroll file to bank", "Employee notice templates"] },
+      ],
+      recoveryWhenOk: [
+        { label: "0–24 h", actions: ["Payroll proceeds on schedule", "HR helpdesk staffed"] },
+      ],
+    },
+  ],
   incidentLab: {
     disclaimer:
       "Verified blocks cite U.S. government and FAA public statements. Meridian Freight Co. and all shipment outcomes below are a fictional planning exercise — not confirmed impacts on any real company.",
