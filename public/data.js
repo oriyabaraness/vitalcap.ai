@@ -105,6 +105,146 @@ window.VITALCAP_DATA = {
       ],
     },
   ],
+  incidentLab: {
+    disclaimer:
+      "Verified blocks cite U.S. government and FAA public statements. Meridian Freight Co. and all shipment outcomes below are a fictional planning exercise — not confirmed impacts on any real company.",
+    events: [
+      {
+        id: "faa-2026-11-13",
+        shortTitle: "FAA nationwide ground stop",
+        date: "November 13, 2026",
+        headline:
+          "On November 13, 2026, the FAA ordered a nationwide ground stop after communications and radar feeds became unstable.",
+        verifiedFacts: [
+          {
+            label: "Ground stop window",
+            text: "The FAA states the stop was issued at about 3:30 p.m. Eastern Time and air traffic resumed at 8:15 p.m. the same day — roughly 4 hours 45 minutes.",
+          },
+          {
+            label: "Cause (preliminary)",
+            text: "FAA describes legacy equipment instability after excessive connection attempts on the FAA Telecommunications Infrastructure (FTI) network, disrupting aircraft communications and radar feeds.",
+          },
+          {
+            label: "Scale (public reporting)",
+            text: "FAA reports about 3,500 aircraft safely landed during the stop. The same Q&A cites roughly 12,462 U.S. flight cancellations on November 13, noting not every cancellation was attributable only to the ground stop.",
+          },
+          {
+            label: "After the stop",
+            text: "Official updates warn that lifting the stop did not instantly restore normal airline schedules — recovery continued over subsequent days.",
+          },
+        ],
+        sources: [
+          {
+            label: "FAA — Nationwide ground stop Q&A",
+            url: "https://www.faa.gov/newsroom/nationwide-ground-stop-questions-and-answers",
+          },
+          {
+            label: "FAA — Statement (Nov 13, 2026)",
+            url: "https://www.faa.gov/newsroom/faa-statement-nationwide-ground-stop",
+          },
+          {
+            label: "U.S. DOT — Restoration briefing",
+            url: "https://www.transportation.gov/briefing-room/icymi-us-transportation-secretary-sean-p-duffy-provides-update-restoration-airspace",
+          },
+        ],
+        defaultStopHours: 4.75,
+        defaultRecoveryLagHours: 24,
+        recoveryLagHint:
+          "Optional lag after the stop lifts — use your own planning assumption for backlog and rescheduled flights (not a government-published figure).",
+      },
+    ],
+    hypothetical: {
+      orgName: "Meridian Freight Co.",
+      orgNote: "Illustrative mid-market logistics operator (fictional).",
+      airShareDefault: 38,
+      dependencies: [
+        {
+          id: "belly",
+          name: "Commercial belly cargo",
+          detail: "Scheduled passenger flights carry high-priority parcels.",
+          bcpFunction: "Map · transportation dependency",
+        },
+        {
+          id: "integrator",
+          name: "Integrator air hubs",
+          detail: "Nightly sorts at MEM / IND / SDF-style hubs.",
+          bcpFunction: "Map · SPoF site",
+        },
+        {
+          id: "charter",
+          name: "On-demand air charter",
+          detail: "Backup lane for medical and AOG parts.",
+          bcpFunction: "Map · alternate carrier",
+        },
+        {
+          id: "ground",
+          name: "Line-haul trucking",
+          detail: "Primary mode for non-time-critical freight.",
+          bcpFunction: "Map · mode shift option",
+        },
+      ],
+      shipments: [
+        {
+          id: "med",
+          lane: "Medical cold chain",
+          volumeLabel: "12 pallets / night",
+          madHours: 8,
+          dependsOnAir: true,
+          note: "Cells and reagents with temperature band.",
+        },
+        {
+          id: "ecom",
+          lane: "E-commerce next-day",
+          volumeLabel: "~400 cartons",
+          madHours: 18,
+          dependsOnAir: true,
+          note: "SLA tied to air sort at regional hub.",
+        },
+        {
+          id: "jit",
+          lane: "Factory JIT components",
+          volumeLabel: "3 skids",
+          madHours: 36,
+          dependsOnAir: true,
+          note: "Could defer to ground if line idle.",
+        },
+        {
+          id: "bulk",
+          lane: "Bulk replenishment",
+          volumeLabel: "Truckload",
+          madHours: 72,
+          dependsOnAir: false,
+          note: "Already on trailer network.",
+        },
+      ],
+      playbooks: [
+        {
+          id: "shift-ground",
+          title: "Shift to line-haul + regional cross-dock",
+          when: "gap",
+          detail: "Hold express at origin; release on first available ground departures.",
+        },
+        {
+          id: "charter",
+          title: "Activate charter broker",
+          when: "med",
+          detail: "Pre-approved brokers for lanes under 8h MAD.",
+        },
+        {
+          id: "defer",
+          title: "Defer non-critical WMS releases",
+          when: "bulk",
+          detail: "Pause low-priority picks; protect cold chain and SLA tiers.",
+        },
+        {
+          id: "comms",
+          title: "Customer comms template",
+          when: "always",
+          detail: "Notify shippers with revised ETA and regulatory holds if any.",
+        },
+      ],
+    },
+  },
   threatSteps: [
     {
       title: "1 · Detect",

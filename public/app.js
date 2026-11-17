@@ -48,6 +48,195 @@ function renderPackageFlow() {
     .join("");
 }
 
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function renderIncidentLab() {
+  const root = document.getElementById("incident-lab");
+  const lab = DATA.incidentLab;
+  if (!root || !lab) return;
+
+  const event = lab.events[0];
+  const hypo = lab.hypothetical;
+
+  root.innerHTML = `
+    <p class="fine-print incident-disclaimer">${lab.disclaimer}</p>
+    <div class="incident-layout">
+      <article class="incident-panel incident-panel--facts" aria-labelledby="incident-facts-title">
+        <div class="incident-badge">Verified · public record</div>
+        <h3 id="incident-facts-title" class="incident-panel-title">${escapeHtml(event.shortTitle)}</h3>
+        <p class="incident-date">${escapeHtml(event.date)}</p>
+        <p class="incident-headline">${escapeHtml(event.headline)}</p>
+        <ul class="incident-facts">
+          ${event.verifiedFacts
+            .map(
+              (f) => `
+            <li>
+              <span class="incident-fact-label">${escapeHtml(f.label)}</span>
+              <span class="incident-fact-text">${escapeHtml(f.text)}</span>
+            </li>`
+            )
+            .join("")}
+        </ul>
+        <p class="incident-sources-label">Sources</p>
+        <ul class="incident-sources">
+          ${event.sources
+            .map(
+              (s) =>
+                `<li><a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.label)}</a></li>`
+            )
+            .join("")}
+        </ul>
+      </article>
+
+      <article class="incident-panel incident-panel--sim" aria-labelledby="incident-sim-title">
+        <div class="incident-badge incident-badge--hypo">Hypothetical · BCP exercise</div>
+        <h3 id="incident-sim-title" class="incident-panel-title">${escapeHtml(hypo.orgName)}</h3>
+        <p class="incident-org-note">${escapeHtml(hypo.orgNote)}</p>
+
+        <div class="incident-controls">
+          <label class="incident-control">
+            <span>Stop window (hours)</span>
+            <input type="number" id="incident-stop" min="0" step="0.25" value="${event.defaultStopHours}" />
+            <span class="incident-control-hint">Default from FAA published stop / lift times.</span>
+          </label>
+          <label class="incident-control">
+            <span>Your recovery lag (hours)</span>
+            <input type="number" id="incident-lag" min="0" step="1" value="${event.defaultRecoveryLagHours}" />
+            <span class="incident-control-hint">${escapeHtml(event.recoveryLagHint)}</span>
+          </label>
+          <label class="incident-control">
+            <span>Share of volume on air (%)</span>
+            <input type="range" id="incident-air" min="0" max="100" step="1" value="${hypo.airShareDefault}" />
+            <output id="incident-air-out">${hypo.airShareDefault}</output>
+          </label>
+        </div>
+
+        <ol class="incident-bcp-steps" id="incident-steps"></ol>
+      </article>
+    </div>`;
+
+  const stopEl = document.getElementById("incident-stop");
+  const lagEl = document.getElementById("incident-lag");
+  const airEl = document.getElementById("incident-air");
+  const airOut = document.getElementById("incident-air-out");
+  const stepsEl = document.getElementById("incident-steps");
+
+  function computeIncident() {
+    const stopH = Math.max(0, Number(stopEl.value) || 0);
+    const lagH = Math.max(0, Number(lagEl.value) || 0);
+    const airPct = Number(airEl.value) || 0;
+    const effective = stopH + lagH;
+    if (airOut) airOut.textContent = String(airPct);
+
+    const deps = hypo.dependencies
+      .map(
+        (d) => `
+      <li class="incident-dep">
+        <span class="incident-dep-name">${escapeHtml(d.name)}</span>
+        <span class="incident-dep-detail">${escapeHtml(d.detail)}</span>
+        <span class="incident-dep-fn">${escapeHtml(d.bcpFunction)}</span>
+      </li>`
+      )
+      .join("");
+
+    const shipmentRows = hypo.shipments
+      .map((s) => {
+        const exposed = s.dependsOnAir && airPct > 0;
+        const gap = exposed && effective > s.madHours;
+        const status = !exposed
+          ? { cls: "ok", text: "Not air-dependent in this model" }
+          : gap
+            ? { cls: "bad", text: `${effective}h effective outage exceeds ${s.madHours}h MAD` }
+            : { cls: "ok", text: `Within ${s.madHours}h MAD at ${effective}h modeled outage` };
+        return `
+        <tr class="incident-ship-row" data-gap="${gap ? "1" : "0"}" data-med="${s.id === "med" ? "1" : "0"}">
+          <td>${escapeHtml(s.lane)}</td>
+          <td>${escapeHtml(s.volumeLabel)}</td>
+          <td>${s.madHours}h</td>
+          <td><span class="incident-status incident-status--${status.cls}">${status.text}</span></td>
+        </tr>
+        <tr class="incident-ship-note"><td colspan="4">${escapeHtml(s.note)}</td></tr>`;
+      })
+      .join("");
+
+    const gaps = hypo.shipments.filter(
+      (s) => s.dependsOnAir && airPct > 0 && effective > s.madHours
+    );
+    const gapSummary =
+      gaps.length === 0
+        ? `At ${effective}h modeled outage and ${airPct}% on air, every illustrated lane stays within its MAD.`
+        : `${gaps.length} air-dependent lane${gaps.length > 1 ? "s" : ""} exceed MAD — alternatives required.`;
+
+  const playbooks = hypo.playbooks
+    .filter((p) => {
+      if (p.when === "always") return true;
+      if (p.when === "bulk") return true;
+      if (p.when === "med") return gaps.some((g) => g.id === "med");
+      if (p.when === "gap") return gaps.length > 0;
+      return false;
+    })
+    .map(
+      (p) => `
+      <li class="incident-playbook">
+        <strong>${escapeHtml(p.title)}</strong>
+        <span>${escapeHtml(p.detail)}</span>
+      </li>`
+    )
+    .join("");
+
+    stepsEl.innerHTML = `
+      <li class="incident-step">
+        <h4>1 · Map dependencies</h4>
+        <p class="incident-step-intro">Which parts of the plan assume U.S. air cargo is available?</p>
+        <ul class="incident-deps">${deps}</ul>
+      </li>
+      <li class="incident-step">
+        <h4>2 · Identify critical shipments</h4>
+        <p class="incident-step-intro">Tag lanes with volume and MAD — still fictional numbers.</p>
+        <div class="incident-table-wrap">
+          <table class="incident-table">
+            <thead>
+              <tr><th>Lane</th><th>Volume</th><th>MAD</th><th>vs modeled outage</th></tr>
+            </thead>
+            <tbody>${shipmentRows}</tbody>
+          </table>
+        </div>
+      </li>
+      <li class="incident-step">
+        <h4>3 · Assess outage vs MAD</h4>
+        <p class="incident-step-intro">
+          Effective planning outage = <strong>${effective}h</strong>
+          (${stopH}h stop + ${lagH}h recovery lag you set). This does <em>not</em> claim Meridian Freight experienced that duration.
+        </p>
+        <div class="incident-timeline" role="img" aria-label="Modeled outage compared to shortest air-dependent MAD">
+          <div class="incident-timeline-bar">
+            <span class="incident-timeline-outage" style="width:${Math.min(100, (effective / 72) * 100)}%"></span>
+          </div>
+          <div class="incident-timeline-labels">
+            <span>0h</span>
+            <span>Modeled ${effective}h</span>
+            <span>72h ref.</span>
+          </div>
+        </div>
+        <p id="incident-gap-summary" class="gap-alert ${gaps.length ? "bad" : "ok"}" role="status">${gapSummary}</p>
+      </li>
+      <li class="incident-step">
+        <h4>4 · Act — alternative arrangements</h4>
+        <p class="incident-step-intro">Pre-approved playbook rows VitalCap would surface for this dependency graph.</p>
+        <ul class="incident-playbooks">${playbooks}</ul>
+      </li>`;
+  }
+
+  [stopEl, lagEl, airEl].forEach((el) => el.addEventListener("input", computeIncident));
+  computeIncident();
+}
+
 function renderThreats() {
   const grid = document.getElementById("threat-grid");
   if (!grid) return;
@@ -207,4 +396,5 @@ if (sim.dept) {
 }
 
 renderPackageFlow();
+renderIncidentLab();
 renderThreats();
