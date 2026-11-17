@@ -14,6 +14,13 @@
   --vc-text: #1e293b;
   --vc-muted: #64748b;
   --nav-w: 220px;
+  --cover-logo-w: clamp(320px, 92vw, 720px);
+}
+
+@media (min-width: 960px) {
+  :root {
+    --cover-logo-w: min(800px, 85vw);
+  }
 }
 
 * { box-sizing: border-box; }
@@ -65,15 +72,15 @@ body {
 }
 
 .cover-logo {
-  width: min(480px, 90vw);
-  margin: 0 0 0.5rem;
+  width: var(--cover-logo-w);
+  margin: 0 0 0.75rem;
 }
 
 /* Cover logo intro — every frame is a slice of logo.png */
 .logo-wrap {
   position: relative;
-  width: min(480px, 90vw);
-  margin: 0 0 0.5rem;
+  width: var(--cover-logo-w);
+  margin: 0 0 0.25rem;
 }
 
 .logo-stage {
@@ -101,21 +108,21 @@ body {
 .logo-piece-full {
   z-index: 12;
   opacity: 0;
-  animation: logoFullIn 0.35s ease forwards;
-  animation-delay: 1.82s;
+  animation: logoFullIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 1.95s;
 }
 
 .logo-mask-v-path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: logoMaskDraw 0.88s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: logoMaskDraw 1s cubic-bezier(0.42, 0, 0.18, 1) forwards;
 }
 
 .logo-mask-c-path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: logoMaskDraw 0.62s cubic-bezier(0.35, 0, 0.2, 1) forwards;
-  animation-delay: 0.92s;
+  animation: logoMaskDraw 0.72s cubic-bezier(0.38, 0, 0.2, 1) forwards;
+  animation-delay: 1s;
 }
 
 .logo-wrap--static .logo-mask-v-path,
@@ -130,7 +137,7 @@ body {
   -webkit-mask: url(#logo-mask-v);
   mask: url(#logo-mask-v);
   animation: logoSliceHide 0.2s ease forwards;
-  animation-delay: 1.75s;
+  animation-delay: 1.88s;
 }
 
 .logo-piece-ital {
@@ -138,9 +145,9 @@ body {
   clip-path: inset(0% 58% 0% 13%);
   opacity: 0;
   animation:
-    logoFadeIn 0.35s ease forwards,
-    logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.48s, 1.75s;
+    logoFadeIn 0.4s ease forwards,
+    logoSliceHide 0.22s ease forwards;
+  animation-delay: 0.55s, 1.88s;
 }
 
 .logo-dot-wrap {
@@ -150,50 +157,50 @@ body {
 
 .logo-dot-wrap-1 {
   animation:
-    logoDot1 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    logoDotLock 0.25s ease-out forwards,
-    logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.58s, 1.06s, 1.75s;
+    logoDot1 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDotLock 0.28s ease-out forwards,
+    logoSliceHide 0.22s ease forwards;
+  animation-delay: 0.62s, 1.1s, 1.88s;
 }
 
 .logo-dot-wrap-2 {
   animation:
-    logoDot2 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    logoDotLock 0.25s ease-out forwards,
-    logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.7s, 1.18s, 1.75s;
+    logoDot2 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDotLock 0.28s ease-out forwards,
+    logoSliceHide 0.22s ease forwards;
+  animation-delay: 0.76s, 1.24s, 1.88s;
 }
 
 .logo-dot-wrap-3 {
   animation:
-    logoDot3 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    logoDotLock 0.25s ease-out forwards,
-    logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.82s, 1.3s, 1.75s;
+    logoDot3 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDotLock 0.28s ease-out forwards,
+    logoSliceHide 0.22s ease forwards;
+  animation-delay: 0.9s, 1.38s, 1.88s;
 }
 
 .logo-dot-wrap-4 {
   animation:
-    logoDot4 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    logoDotLock 0.25s ease-out forwards,
-    logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.94s, 1.42s, 1.75s;
+    logoDot4 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDotLock 0.28s ease-out forwards,
+    logoSliceHide 0.22s ease forwards;
+  animation-delay: 1.04s, 1.52s, 1.88s;
 }
 
 .logo-dot-wrap-1 .logo-piece-dot {
-  clip-path: circle(3.2% at 39.4% 30%);
+  clip-path: circle(3.6% at 39.4% 30%);
 }
 
 .logo-dot-wrap-2 .logo-piece-dot {
-  clip-path: circle(3.2% at 38.4% 48.8%);
+  clip-path: circle(3.6% at 38.4% 48.8%);
 }
 
 .logo-dot-wrap-3 .logo-piece-dot {
-  clip-path: circle(3.2% at 39% 65.5%);
+  clip-path: circle(3.6% at 39% 65.5%);
 }
 
 .logo-dot-wrap-4 .logo-piece-dot {
-  clip-path: circle(3.2% at 43.5% 76.5%);
+  clip-path: circle(3.6% at 43.5% 76.5%);
 }
 
 .logo-piece-c {
@@ -203,7 +210,7 @@ body {
   -webkit-mask: url(#logo-mask-c);
   mask: url(#logo-mask-c);
   animation: logoSliceHide 0.2s ease forwards;
-  animation-delay: 1.75s;
+  animation-delay: 1.88s;
 }
 
 .logo-piece-ap {
@@ -211,9 +218,9 @@ body {
   clip-path: inset(0% 0% 0% 57%);
   opacity: 0;
   animation:
-    logoFadeIn 0.35s ease forwards,
-    logoSliceHide 0.2s ease forwards;
-  animation-delay: 1.48s, 1.75s;
+    logoFadeIn 0.4s ease forwards,
+    logoSliceHide 0.22s ease forwards;
+  animation-delay: 1.58s, 1.88s;
 }
 
 .logo-wrap--static .logo-piece-full {
@@ -245,7 +252,7 @@ body {
     transform: scale(1);
   }
   45% {
-    transform: scale(1.12);
+    transform: scale(1.18);
   }
   100% {
     transform: scale(1);
@@ -264,11 +271,13 @@ body {
 @keyframes logoFullIn {
   from {
     opacity: 0;
-    transform: scale(0.992);
+    transform: scale(0.97);
+    filter: blur(3px);
   }
   to {
     opacity: 1;
     transform: scale(1);
+    filter: blur(0);
   }
 }
 
@@ -282,7 +291,7 @@ body {
 @keyframes logoDot1 {
   from {
     opacity: 0;
-    transform: translate(-22%, 16%) scale(0.35);
+    transform: translate(-28%, 20%) scale(0.25);
   }
   to {
     opacity: 1;
@@ -293,7 +302,7 @@ body {
 @keyframes logoDot2 {
   from {
     opacity: 0;
-    transform: translate(20%, -14%) scale(0.35);
+    transform: translate(26%, -18%) scale(0.25);
   }
   to {
     opacity: 1;
@@ -304,7 +313,7 @@ body {
 @keyframes logoDot3 {
   from {
     opacity: 0;
-    transform: translate(18%, 12%) scale(0.35);
+    transform: translate(24%, 16%) scale(0.25);
   }
   to {
     opacity: 1;
@@ -315,7 +324,7 @@ body {
 @keyframes logoDot4 {
   from {
     opacity: 0;
-    transform: translate(-16%, -10%) scale(0.35);
+    transform: translate(-22%, -14%) scale(0.25);
   }
   to {
     opacity: 1;
@@ -674,11 +683,12 @@ body {
 .cover-inner {
   position: relative;
   z-index: 1;
-  padding: 3rem 3.5rem;
+  padding: 3.25rem 3rem 3.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: min(85vh, 720px);
+  align-items: flex-start;
+  min-height: min(88vh, 780px);
   width: 100%;
 }
 
@@ -697,8 +707,8 @@ body {
 }
 
 .cover-tagline {
-  margin: 1rem 0 0;
-  max-width: 38rem;
+  margin: 1.25rem 0 0;
+  max-width: 42rem;
   font-size: clamp(1.15rem, 2vw, 1.5rem);
   line-height: 1.45;
   color: var(--vc-navy);

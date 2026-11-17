@@ -2,7 +2,7 @@
   const wrap = document.getElementById("cover-logo");
   if (!wrap) return;
 
-  const STORAGE_KEY = "vitalcap-logo-intro-v5";
+  const STORAGE_KEY = "vitalcap-logo-intro-v6";
   const prefersReduced =
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const played = window.sessionStorage.getItem(STORAGE_KEY) === "1";
@@ -16,5 +16,5 @@
 
   window.setTimeout(() => {
     wrap.classList.add("logo-wrap--done");
-  }, 2200);
+  }, 2450);
 })();
