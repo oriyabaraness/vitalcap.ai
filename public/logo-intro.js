@@ -2,7 +2,7 @@
   const wrap = document.getElementById("cover-logo");
   if (!wrap) return;
 
-  const STORAGE_KEY = "vitalcap-logo-intro-v1";
+  const STORAGE_KEY = "vitalcap-logo-intro-v2";
   const prefersReduced =
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const played = window.sessionStorage.getItem(STORAGE_KEY) === "1";
@@ -17,5 +17,5 @@
   /* After connect beat, settle on the raster logo for pixel-perfect brand match */
   window.setTimeout(() => {
     wrap.classList.add("logo-wrap--done");
-  }, 3200);
+  }, 3000);
 })();
