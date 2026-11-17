@@ -102,24 +102,35 @@ body {
   z-index: 12;
   opacity: 0;
   animation: logoFullIn 0.35s ease forwards;
-  animation-delay: 1.45s;
+  animation-delay: 1.82s;
+}
+
+.logo-mask-v-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: logoMaskDraw 0.88s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.logo-mask-c-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: logoMaskDraw 0.62s cubic-bezier(0.35, 0, 0.2, 1) forwards;
+  animation-delay: 0.92s;
+}
+
+.logo-wrap--static .logo-mask-v-path,
+.logo-wrap--static .logo-mask-c-path {
+  animation: none;
+  stroke-dashoffset: 0;
 }
 
 .logo-piece-v {
   z-index: 1;
   clip-path: inset(0% 87% 0% 0);
-  -webkit-mask-image: linear-gradient(to top, #000, #000);
-  mask-image: linear-gradient(to top, #000, #000);
-  -webkit-mask-size: 100% 0%;
-  mask-size: 100% 0%;
-  -webkit-mask-position: left bottom;
-  mask-position: left bottom;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  animation:
-    logoVReveal 0.65s cubic-bezier(0.33, 1, 0.32, 1) forwards,
-    logoSliceHide 0.2s ease forwards;
-  animation-delay: 0s, 1.4s;
+  -webkit-mask: url(#logo-mask-v);
+  mask: url(#logo-mask-v);
+  animation: logoSliceHide 0.2s ease forwards;
+  animation-delay: 1.75s;
 }
 
 .logo-piece-ital {
@@ -129,7 +140,7 @@ body {
   animation:
     logoFadeIn 0.35s ease forwards,
     logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.5s, 1.4s;
+  animation-delay: 0.48s, 1.75s;
 }
 
 .logo-dot-wrap {
@@ -139,30 +150,34 @@ body {
 
 .logo-dot-wrap-1 {
   animation:
-    logoDot1 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDot1 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDotLock 0.25s ease-out forwards,
     logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.72s, 1.4s;
+  animation-delay: 0.58s, 1.06s, 1.75s;
 }
 
 .logo-dot-wrap-2 {
   animation:
-    logoDot2 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDot2 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDotLock 0.25s ease-out forwards,
     logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.84s, 1.4s;
+  animation-delay: 0.7s, 1.18s, 1.75s;
 }
 
 .logo-dot-wrap-3 {
   animation:
-    logoDot3 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDot3 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDotLock 0.25s ease-out forwards,
     logoSliceHide 0.2s ease forwards;
-  animation-delay: 0.96s, 1.4s;
+  animation-delay: 0.82s, 1.3s, 1.75s;
 }
 
 .logo-dot-wrap-4 {
   animation:
-    logoDot4 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDot4 0.48s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    logoDotLock 0.25s ease-out forwards,
     logoSliceHide 0.2s ease forwards;
-  animation-delay: 1.08s, 1.4s;
+  animation-delay: 0.94s, 1.42s, 1.75s;
 }
 
 .logo-dot-wrap-1 .logo-piece-dot {
@@ -184,11 +199,11 @@ body {
 .logo-piece-c {
   z-index: 4;
   clip-path: inset(0% 44% 0% 39%);
-  opacity: 0;
-  animation:
-    logoFadeIn 0.35s ease forwards,
-    logoSliceHide 0.2s ease forwards;
-  animation-delay: 1.1s, 1.4s;
+  opacity: 1;
+  -webkit-mask: url(#logo-mask-c);
+  mask: url(#logo-mask-c);
+  animation: logoSliceHide 0.2s ease forwards;
+  animation-delay: 1.75s;
 }
 
 .logo-piece-ap {
@@ -198,7 +213,7 @@ body {
   animation:
     logoFadeIn 0.35s ease forwards,
     logoSliceHide 0.2s ease forwards;
-  animation-delay: 1.22s, 1.4s;
+  animation-delay: 1.48s, 1.75s;
 }
 
 .logo-wrap--static .logo-piece-full {
@@ -219,10 +234,21 @@ body {
   animation: none;
 }
 
-@keyframes logoVReveal {
+@keyframes logoMaskDraw {
   to {
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes logoDotLock {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
@@ -299,8 +325,7 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .logo-piece,
-  .logo-dot-wrap,
-  .logo-connector-path {
+  .logo-dot-wrap {
     animation: none !important;
   }
 
