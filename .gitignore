@@ -1,0 +1,5 @@
+.DS_Store
+.pdf-ref/
+node_modules/
+.env
+.env.*
