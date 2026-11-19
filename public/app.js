@@ -477,6 +477,61 @@ if (sim.dept && DEMO.length) {
   computeSim();
 }
 
+function renderUrgency() {
+  const u = DATA.urgency;
+  if (!u) return;
+
+  const thesis = document.getElementById("urgency-thesis");
+  if (thesis) thesis.textContent = u.thesis;
+
+  const timeline = document.getElementById("reg-timeline");
+  if (timeline) {
+    timeline.innerHTML = u.regulatoryTimeline
+      .map(
+        (item) => `
+      <li class="reg-timeline__item">
+        <time class="reg-timeline__when" datetime="${escapeHtml(item.when)}">${escapeHtml(item.when)}</time>
+        <div class="reg-timeline__body">
+          <span class="reg-timeline__regime">${escapeHtml(item.regime)}</span>
+          <strong class="reg-timeline__headline">${escapeHtml(item.headline)}</strong>
+          <p class="reg-timeline__detail">${escapeHtml(item.detail)}</p>
+          <a class="reg-timeline__source" href="${escapeHtml(item.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.sourceLabel)}</a>
+        </div>
+      </li>`
+      )
+      .join("");
+  }
+
+  const stats = document.getElementById("economic-stats");
+  if (stats && u.economicCase?.stats) {
+    stats.innerHTML = u.economicCase.stats
+      .map(
+        (s) => `
+      <article class="economic-stat">
+        <p class="economic-stat__value">${escapeHtml(s.value)}</p>
+        <p class="economic-stat__label">${escapeHtml(s.label)}</p>
+        <p class="economic-stat__detail">${escapeHtml(s.detail)}</p>
+        <a class="economic-stat__source" href="${escapeHtml(s.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.sourceLabel)}</a>
+      </article>`
+      )
+      .join("");
+  }
+
+  const drivers = document.getElementById("spend-drivers");
+  if (drivers && u.economicCase?.spendDrivers) {
+    drivers.innerHTML = u.economicCase.spendDrivers
+      .map(
+        (d) => `
+      <li class="spend-driver">
+        <strong>${escapeHtml(d.title)}</strong>
+        <span>${escapeHtml(d.text)}</span>
+      </li>`
+      )
+      .join("");
+  }
+}
+
 renderPackageFlow();
+renderUrgency();
 renderIncidentLab();
 renderThreats();

@@ -3,17 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
     <title>VitalCap — AI Business Continuity</title>
     <link rel="icon" href="logo.png" type="image/jpeg" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="deck">
-      <aside class="deck-nav">
-        <a href="#cover" class="deck-logo">
+    <header class="site-header">
+      <div class="site-header__bar">
+        <a href="#cover" class="site-header__logo">
           <img src="logo.png" alt="VitalCap" class="brand-logo nav-logo" width="168" height="73" />
         </a>
-        <nav class="deck-menu">
+        <nav class="site-header__nav deck-menu" aria-label="Pitch sections">
           <a href="#cover" class="deck-link">Cover</a>
           <a href="#problem" class="deck-link">The Problem</a>
           <a href="#whynow" class="deck-link">Why Now</a>
@@ -30,23 +31,41 @@
           <a href="#ask" class="deck-link">The Ask</a>
           <a href="#contact" class="deck-link">Contact</a>
         </nav>
-        <p class="nav-hint">Scroll or use the menu to jump to a section</p>
-      </aside>
+        <div class="site-header__cta">
+          <a class="btn btn--ghost" href="#risk">Product demo</a>
+          <a class="btn btn--primary" href="#contact">Get in touch</a>
+        </div>
+      </div>
+    </header>
 
-      <main class="deck-stage">
+    <main class="deck-stage">
         <!-- 1. COVER -->
         <section id="cover" class="slide slide-cover">
           <div class="cover-bg"></div>
-          <div class="cover-inner cover-inner--solo">
-            <h1 class="cover-title">
-              <img
-                src="logo.png"
-                alt="VitalCap"
-                class="brand-logo cover-logo"
-                width="1024"
-                height="443"
-              />
-            </h1>
+          <div class="hero-grid cover-inner">
+            <div class="hero-copy">
+              <p class="eyebrow hero-eyebrow">AI business continuity</p>
+              <h1 class="cover-title">
+                <img
+                  src="logo.png"
+                  alt="VitalCap"
+                  class="brand-logo cover-logo"
+                  width="1024"
+                  height="443"
+                />
+              </h1>
+              <p class="hero-lede">
+                Continuity plans that map dependencies, test tolerances, and update when the world moves — not once a year in a binder.
+              </p>
+              <div class="hero-cta">
+                <a class="btn btn--primary" href="#risk">Try the product demo</a>
+                <a class="btn btn--ghost" href="#incidents">November 2026 incident lab</a>
+              </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+              <div class="hero-visual__mesh"></div>
+              <p class="hero-visual__tag">Map · Detect · Assess · Act</p>
+            </div>
           </div>
         </section>
 
@@ -103,39 +122,35 @@
           <p class="takeaway">The result: when disruption hits, the plan describes last year’s company.</p>
         </section>
 
-        <!-- 3. WHY NOW -->
-        <section id="whynow" class="slide">
+        <!-- 3. WHY NOW — regulation + economics -->
+        <section id="whynow" class="slide slide-wide slide-urgency">
           <p class="eyebrow">Why now</p>
-          <h2 class="slide-title">Resilience moved from best practice to board-level obligation</h2>
-          <div class="card-grid three">
+          <h2 class="slide-title">Regulation turned continuity into a budget line — not a binder</h2>
+          <p id="urgency-thesis" class="slide-body urgency-thesis"></p>
+          <div class="urgency-layout">
+            <div class="urgency-panel urgency-panel--reg">
+              <h3 class="urgency-panel__title">Regulatory timeline</h3>
+              <p class="urgency-panel__sub">Source-backed milestones — not a complete global survey.</p>
+              <ol id="reg-timeline" class="reg-timeline"></ol>
+            </div>
+            <div class="urgency-panel urgency-panel--econ">
+              <h3 class="urgency-panel__title">Why organizations pay (and keep paying)</h3>
+              <div id="economic-stats" class="economic-stats"></div>
+              <ul id="spend-drivers" class="spend-drivers"></ul>
+            </div>
+          </div>
+          <div class="urgency-foot card-grid three">
             <div class="card accent-top">
-              <h3>Regulation</h3>
-              <p>
-                EU and UK rules now require financial firms to map critical services, dependencies and
-                impact tolerances — and to prove it.
-              </p>
-              <ul class="reg-dates">
-                <li>
-                  <strong>EU DORA</strong> — in force 16 Jan 2023; fully applicable from
-                  <strong>17 Jan 2025</strong>
-                </li>
-                <li>
-                  <strong>UK FCA PS21/3</strong> — rules effective <strong>31 Mar 2022</strong>; full
-                  mapping, testing and impact-tolerance compliance by <strong>31 Mar 2025</strong>
-                </li>
-                <li>
-                  <strong>UK PRA SS1/21</strong> — aligned operational-resilience expectations for
-                  PRA-authorised firms (same <strong>31 Mar 2025</strong> implementation deadline)
-                </li>
-              </ul>
+              <h3>Concentration risk</h3>
+              <p>Shared cloud and payment rails mean one outage hits many firms — mapping and tolerances must be live, not annual.</p>
             </div>
             <div class="card accent-top">
-              <h3>Concentration</h3>
-              <p>Operations depend on a handful of cloud and SaaS vendors. One vendor outage now ripples across thousands of firms at once.</p>
+              <h3>Enforcement after deadlines</h3>
+              <p>UK and EU supervisors now treat resilience evidence as ongoing BAU; gaps surface in themed reviews and incident classifications.</p>
             </div>
             <div class="card accent-top">
-              <h3>AI is ready</h3>
-              <p>Language models can now read organizational data and open-source signals and draft a plan in minutes instead of months.</p>
+              <h3>VitalCap wedge</h3>
+              <p>Automates the dependency → tolerance → test loop regulators describe — on a SaaS cadence customers already budget for.</p>
             </div>
           </div>
         </section>
@@ -391,24 +406,28 @@
           <h2 class="slide-title">A growing, regulation-driven market</h2>
           <div class="stat-row">
             <div class="stat">
-              <span class="stat-num">$0.9B</span>
-              <span class="stat-label">BCM planning software, 2026</span>
+              <span class="stat-num">$1.35B</span>
+              <span class="stat-label">BCP software, 2025</span>
             </div>
             <div class="stat">
-              <span class="stat-num">$2.1B</span>
-              <span class="stat-label">Projected by 2033</span>
+              <span class="stat-num">$2.45B</span>
+              <span class="stat-label">BCP software, 2030</span>
             </div>
             <div class="stat">
-              <span class="stat-num">12.8%</span>
-              <span class="stat-label">Annual growth (CAGR)</span>
+              <span class="stat-num">12.7%</span>
+              <span class="stat-label">Software CAGR (2025–30)</span>
             </div>
           </div>
           <p class="slide-body">
-            The wider business continuity management market, including services, is estimated at
-            <strong>$1.45B in 2026</strong>. Demand is led by financial services, healthcare and critical
-            infrastructure, where regulators now expect continuous, evidence-based resilience.
+            The wider business continuity management market (software <em>and</em> services) is forecast at
+            <strong>$1.28B in 2025</strong>, rising to <strong>$2.41B by 2030</strong>. Growth is linked to
+            compliance, supply-chain resilience, and cloud BCM — the same forces driving VitalCap’s tiered SaaS model.
           </p>
-          <p class="source">Sources: Persistence Market Research (2026–2033 forecast); The Business Research Company, BCM Global Market Report 2026.</p>
+          <p class="source">
+            Sources:
+            <a href="https://www.giiresearch.com/report/tbrc2131943-business-continuity-planning-software-global.html" target="_blank" rel="noopener noreferrer">TBRC — BCP software (2025–2030)</a>;
+            <a href="https://www.giiresearch.com/report/tbrc2009508-business-continuity-management-global-market.html" target="_blank" rel="noopener noreferrer">TBRC — BCM global (2026 report)</a>.
+          </p>
         </section>
 
         <!-- 10. COMPETITION -->
@@ -631,17 +650,43 @@
         </section>
 
         <footer class="site-footer" aria-label="Site footer">
-          <p class="site-footer__brand">VitalCap · Investor pitch · 2026</p>
-          <p class="site-footer__meta">
-            <a href="tel:+972548222991">054-8222991</a>
-            <span aria-hidden="true">·</span>
-            <a href="mailto:oriyabaraness@gmail.com">oriyabaraness@gmail.com</a>
-            <span aria-hidden="true">·</span>
-            Tel Aviv, Israel
-          </p>
+          <div class="site-footer__grid">
+            <div class="site-footer__col">
+              <img src="logo.png" alt="" class="site-footer__logo" width="120" height="52" />
+              <p class="site-footer__brand">VitalCap · Investor pitch · 2026</p>
+              <p class="site-footer__blurb">AI-powered business continuity for teams that must prove impact tolerances — not just write them.</p>
+            </div>
+            <div class="site-footer__col">
+              <p class="site-footer__heading">Product story</p>
+              <ul class="site-footer__links">
+                <li><a href="#packages">How it works</a></li>
+                <li><a href="#risk">Product demo</a></li>
+                <li><a href="#incidents">Incident lab</a></li>
+                <li><a href="#threats">Threat demo</a></li>
+              </ul>
+            </div>
+            <div class="site-footer__col">
+              <p class="site-footer__heading">Investor narrative</p>
+              <ul class="site-footer__links">
+                <li><a href="#whynow">Why now</a></li>
+                <li><a href="#market">Market</a></li>
+                <li><a href="#model">Business model</a></li>
+                <li><a href="#ask">The ask</a></li>
+              </ul>
+            </div>
+            <div class="site-footer__col">
+              <p class="site-footer__heading">Contact</p>
+              <ul class="site-footer__links">
+                <li><a href="tel:+972548222991">054-8222991</a></li>
+                <li><a href="mailto:oriyabaraness@gmail.com">oriyabaraness@gmail.com</a></li>
+                <li>Tel Aviv, Israel</li>
+              </ul>
+              <a class="btn btn--primary btn--sm" href="mailto:oriyabaraness@gmail.com?subject=VitalCap%20enquiry">Get in touch</a>
+            </div>
+          </div>
+          <p class="site-footer__legal">© 2026 VitalCap. Illustrative demos; market figures cite third-party reports linked on-site.</p>
         </footer>
-      </main>
-    </div>
+    </main>
 
     <script src="data.js"></script>
     <script src="app.js"></script>

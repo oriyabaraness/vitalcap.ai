@@ -105,6 +105,107 @@ window.VITALCAP_DATA = {
       ],
     },
   ],
+  urgency: {
+    thesis:
+      "Disruptions are not the pitch — enforceable mapping, tolerances, and ICT resilience are. That shift creates recurring budget for software that stays current, not slide decks refreshed once a year.",
+    regulatoryTimeline: [
+      {
+        when: "31 Mar 2022",
+        regime: "UK FCA PS21/3",
+        headline: "Operational resilience rules take effect",
+        detail:
+          "Firms must identify important business services, set impact tolerances, and map dependencies — the foundation of evidence-based BCP.",
+        sourceLabel: "FCA PS21/3",
+        sourceUrl: "https://www.fca.org.uk/publications/policy-statements/ps21-3-building-operational-resilience",
+      },
+      {
+        when: "16 Jan 2023",
+        regime: "EU DORA",
+        headline: "Digital Operational Resilience Act enters into force",
+        detail: "Harmonised ICT risk management rules begin the transition period ahead of full application.",
+        sourceLabel: "EUR-Lex Reg. 2022/2554",
+        sourceUrl: "https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng",
+      },
+      {
+        when: "31 Mar 2025",
+        regime: "UK FCA / PRA",
+        headline: "Impact tolerance deadline",
+        detail:
+          "Firms must complete mapping and testing to remain within impact tolerances for each important business service, with board-approved investments.",
+        sourceLabel: "FCA operational resilience",
+        sourceUrl: "https://www.fca.org.uk/firms/operational-resilience/insights-observations",
+      },
+      {
+        when: "17 Jan 2025",
+        regime: "EU DORA",
+        headline: "Full application across financial entities",
+        detail:
+          "Documented ICT risk management, incident classification and reporting, resilience testing, and third-party ICT oversight become mandatory (with proportionality for micro firms).",
+        sourceLabel: "EUR-Lex DORA summary",
+        sourceUrl: "https://eur-lex.europa.eu/summary/ENG/4653041",
+      },
+      {
+        when: "Jan 2025",
+        regime: "EBA",
+        headline: "ICT guidelines aligned to DORA",
+        detail:
+          "EBA narrows pre-DORA ICT guidelines to avoid duplication and clarify expectations for credit institutions and payment firms under DORA.",
+        sourceLabel: "EBA press release",
+        sourceUrl: "https://www.eba.europa.eu/publications-and-media/press-releases/eba-amends-its-guidelines-ict-and-security-risk-management-measures-context-dora-application",
+      },
+      {
+        when: "Ongoing",
+        regime: "Supervisory practice",
+        headline: "Annual reviews, not one-off binders",
+        detail:
+          "FCA expects impact tolerances, mapping, and scenario testing as business-as-usual — new products and vendors re-open the evidence pack.",
+        sourceLabel: "FCA observations (2025+)",
+        sourceUrl: "https://www.fca.org.uk/publications/good-and-poor-practice/operational-resilience-insights-observations-one-year",
+      },
+    ],
+    economicCase: {
+      stats: [
+        {
+          value: "$100K+",
+          label: "Typical 1-hour outage (large firms)",
+          detail:
+            "97% of organizations with 1,000+ employees in ITIC’s 2024 survey estimated one hour of downtime costs over $100,000; 41% cited $1M–$5M per hour.",
+          sourceLabel: "ITIC 2024 survey",
+          sourceUrl: "https://itic-corp.com/itic-2024-hourly-cost-of-downtime-part-2/",
+        },
+        {
+          value: "12.7%",
+          label: "BCP software CAGR to 2030",
+          detail:
+            "Business continuity planning software projected from about $1.35B (2025) to $2.45B (2030) — regulation and automation called out as drivers.",
+          sourceLabel: "The Business Research Company",
+          sourceUrl: "https://www.giiresearch.com/report/tbrc2131943-business-continuity-planning-software-global.html",
+        },
+        {
+          value: "$2.41B",
+          label: "Broader BCM market by 2030",
+          detail:
+            "Total business continuity management (software plus services) forecast at $2.41B in 2030, 13.5% CAGR from 2025 — compliance and cloud BCM among growth factors.",
+          sourceLabel: "TBRC BCM Global 2026",
+          sourceUrl: "https://www.giiresearch.com/report/tbrc2009508-business-continuity-management-global-market.html",
+        },
+      ],
+      spendDrivers: [
+        {
+          title: "Prove tolerances, not intentions",
+          text: "UK rules require evidence that important services stay within impact tolerances; EU DORA requires documented ICT continuity and tested recovery.",
+        },
+        {
+          title: "Vendor and app drift",
+          text: "Each new SaaS dependency invalidates last year’s BIA unless mapping updates continuously — manual programs can’t keep pace at mid-market cost.",
+        },
+        {
+          title: "Subscription-shaped work",
+          text: "Incident reporting, annual tolerance reviews, third-party registers, and threat-led testing recur on a calendar — ideal for tiered SaaS ARR.",
+        },
+      ],
+    },
+  },
   demoDefaultId: "payment",
   demoDisclaimer:
     "Try adjusting the sliders. This is a simplified illustration of one recovery-objective consistency check, not a complete BIA.",
