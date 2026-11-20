@@ -1,3 +1,5 @@
+import { next } from "@vercel/functions";
+
 export const config = {
   matcher: ["/((?!_vercel|favicon).*)"],
 };
@@ -21,7 +23,7 @@ export default function middleware(request) {
           const u = decoded.slice(0, colon);
           const p = decoded.slice(colon + 1);
           if (u === user && p === pass) {
-            return;
+            return next();
           }
         }
       } catch {
@@ -33,7 +35,7 @@ export default function middleware(request) {
   return new Response("Authentication required.", {
     status: 401,
     headers: {
-      "WWW-Authenticate": 'Basic realm="VitalCap — private investor deck"',
+      "WWW-Authenticate": 'Basic realm="VitalCap private deck"',
     },
   });
 }
