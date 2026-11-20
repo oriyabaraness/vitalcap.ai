@@ -276,11 +276,7 @@ something useful shows immediately. Default on load: Payments Operations → Out
 transfers → SWIFT Gateway, application outage, 4h, already run.
 
 ### 7.2 Main area (desktop ≥1100px), three columns
-- **Left — Impact map (SVG, ~50% width):** five columns left→right:
-  Vendors · Infrastructure & Applications · Processes · Teams · People.
-  Lines connect the chain. After Run: red = down, amber = degraded, grey = unaffected
-  (dimmed). The selected chain is highlighted; unrelated nodes fade. Hover any node for
-  details; click to select. Each column header carries its **source badge**.
+- **Left — Impact map (SVG, ~50% width):** see **section 7.5** for the exact design.
 - **Middle — "Who is disrupted" (~25%):** list grouped by team → people cards:
   name, position, location, status pill, reason chain ("SWIFT Gateway down → Outgoing
   wires stopped"), backup name and whether the backup is also hit. Header:
@@ -294,6 +290,59 @@ transfers → SWIFT Gateway, application outage, 4h, already run.
 **Business impact** (BIA table) · **Recovery plan** (ordered steps with owner + backup +
 target time) · **Gaps** (from `findGaps`, with the source system each fix belongs to) ·
 **Timeline** (a 0–72h scrubber that replays the cascade on the map).
+
+### 7.5 Impact map design (the centrepiece; follow exactly)
+
+**Goal:** an investor understands the disruption in 3 seconds. Show the blast radius, not
+the whole bank.
+
+1. **Summary strip above the map** (large text, one line, updates on every run):
+   `1 vendor → 1 app → 3 processes → 3 teams → 9 people · 2 MAD breaches`
+   Counts come from the engine result. Leave out a step if its count is 0.
+2. **Four columns, always left → right:**
+   **Cause** · **Applications** · **Processes** · **Teams & people**.
+   Under each column heading, a small source line: `Third-Party Risk Management` /
+   `Application Repository` / `BIA register` / `Workforce System`. The Cause column holds
+   whatever was disrupted (vendor, app, site or person). Infrastructure apps go in
+   Applications.
+3. **Status colours and words (never colour alone):**
+   - 🔴 **Down** — red box, text "Down"
+   - 🟠 **Degraded** — amber box, text "Running on workaround"
+   - 🟢 **Still running** — green box with a ✓
+   - Never use grey to mean "fine". Grey reads as off/broken.
+4. **Unaffected items fold into one green summary box per column**, e.g.
+   `✓ 8 processes still running` and `✓ 4 teams not affected`, with hint text
+   `Click to see them` underneath. Clicking expands them (green, ✓) in place; click again to
+   fold. Never use the word "collapsed" in the UI.
+5. **Whole bank first, then zoom.** Before the first Run (and after Reset), draw the whole
+   bank in neutral colours so investors see its scale. On **Run**, unaffected items fade
+   and fold into the green summary boxes (CSS opacity/transform transition, ~600ms,
+   respecting `prefers-reduced-motion`). A **"Show whole bank"** toggle expands everything.
+6. **Box contents:** title (name) and one short subtitle: department name for processes,
+   "RTO 1h · down" for apps, "3 of 3 people" for teams. Each box also gets a small time
+   tag `T+0 → T+5h`. If a process exceeds its MAD, add a red outline ring and the tag
+   `MAD 2h exceeded`.
+7. **Lines:** solid red between impacted items in the chain. **Cross-department process
+   links** (e.g. Sanctions screening → Outgoing wires) are **dashed red** with a small
+   "cross-department" label on hover. Lines to unaffected items are hidden after Run.
+8. **Teams expand into people.** Clicking a team box opens a people list right under it on
+   the map (and highlights them in the "Who is disrupted" panel): name, position, ★ for a
+   critical role, and backup name with `backup also hit` (red) or `backup available` (green).
+9. **Gap warnings on the map.** If `findGaps` has a gap that touches a visible box (key
+   person with no backup, vendor RTO > MAD, backup in the same location), show a ⚠ icon on
+   that box; hovering shows the one-line gap text.
+10. **Click any box → trace.** Highlight its full chain upstream and downstream; fade
+    everything else. Show the chain as one plain sentence under the summary strip, e.g.
+    `Watch-list feed down → Screening app down → Sanctions check stopped → Outgoing wires
+    stopped (Payments) → Wires Team: 4 people`.
+11. **Timeline scrubber** (bottom tab, 7.3) drives the same map: boxes turn red at their
+    `downStart` and green at their `downEnd`.
+12. **"Play the story" button** in the control bar: automatically runs 3 scenarios one after
+    another, ~6 seconds each, with the summary strip as the caption:
+    (a) Vendor outage: Watch-list data provider, 3h; (b) Site unavailable: Cloud region A,
+    8h; (c) People unavailable: the Treasury signatory with no backup, 8h. A Stop button ends it.
+13. **Legend** fixed under the map: Down · Running on workaround · Still running ·
+    dashed = cross-department · ⚠ = gap.
 
 ### 7.4 Other
 - Mobile (<768px): controls stack; map becomes horizontally scrollable; columns stack.
@@ -324,6 +373,37 @@ in this spec; I'll ask separately.
 
 ---
 
+## 9b. Fixes found in review (do these in Milestone 4b, before the map)
+
+Milestones 1–3 are done. A review of the engine on the demo data found these bugs:
+
+1. **Processes with no team fail in every scenario.** `Customer account servicing`,
+   `End-of-day cash positioning`, `Loan origination`, `Collateral management` and
+   `AML transaction monitoring` have no `teamIds`, so the people rule (available staff <
+   `minimumStaff`) marks them down for *any* disruption. Example: SWIFT Gateway down
+   wrongly shows Loan origination down.
+   - Fix data: give every process its own team (section 6).
+   - Fix engine: the people rule only applies when the disruption is of type `people` or
+     `site`, or when a person on that process is actually unavailable. A process with no
+     unavailable people is never taken down by the staffing rule.
+   - Add a test: SWIFT Gateway outage 4h → only processes that use SWIFT Gateway (directly
+     or via upstream processes) are impacted; Loan origination stays OK.
+2. **Workforce data is too thin.** Only 12 people in 7 teams. Expand to **30–40 people**,
+   one team per process, 3–5 people per team. Move `IT Service Desk` and
+   `Infrastructure Ops` out of Payments into a new department **"Technology & Operations"**
+   (add it to `bia-register.js` with a process "IT infrastructure operations", MAD 4h).
+   Keep the deliberate gaps from section 6.
+3. **Messy reason chains.** `impactedPeople` reasons repeat themselves. Return one clean,
+   de-duplicated chain per person, shortest path from the cause, as one sentence:
+   `Identity & Access down → Payment Hub down → Outgoing wires stopped`.
+   Add a test that no reason chain contains the same item twice.
+4. **"Remote" is not a shared site.** Exclude location `"Remote"` from the
+   "backup in the same location" gap and from site outages. Add a test.
+
+After fixing, run `npm test` and also print, for these four scenarios, which processes
+and how many people are impacted, so I can check them: SWIFT Gateway 4h, Card processor
+vendor 4h, Cloud region A 8h, Identity & Access 2h.
+
 ## 10. Milestones (one at a time)
 
 1. **Recon.** Read `public/index.html`, `public/app.js`, `public/data.js`. Tell me what
@@ -331,11 +411,15 @@ in this spec; I'll ask separately.
    reused. No code yet.
 2. **Data files** (section 6) in `public/data/`, loaded by `<script>` tags.
 3. **Engine + tests** (sections 4–5). Run `npm test` and show me passing results.
-4. **New `#risk` layout + cascading dropdowns** (7.1) with the default selection, old demo removed.
-5. **Impact map SVG** (7.2 left) with source badges.
+4. **New `#risk` layout + cascading dropdowns** (7.1) with the default selection, old demo removed. *(Done in the M1–3 commit; check it's complete.)*
+4b. **Review fixes** (section 9b). Show me `npm test` passing and the four scenario printouts.
+5. **Impact map SVG** following **section 7.5 exactly** (summary strip, 4 columns,
+   red/amber/green with words, green "still running" summary boxes, whole bank → zoom on
+   Run, dashed cross-department lines, click-to-trace sentence, team → people expand,
+   ⚠ gap icons, legend). "Play the story" button comes in milestone 8.
 6. **"Who is disrupted" panel + details panel** (7.2 middle/right).
 7. **Bottom tabs:** Business impact, Recovery plan, Gaps, Timeline.
-8. **Incident replay dropdown** (section 8) + Full screen button.
+8. **Incident replay dropdown** (section 8) + **Play the story** button (7.5 #12) + Full screen button.
 9. **Polish:** mobile, accessibility, no console errors, every other section still works.
 
 After each milestone: list files changed, the command to run it (`npm start`, then open
@@ -350,6 +434,9 @@ http://localhost:3002/#risk), and exactly what to click to check it.
 - Site unavailable "Cloud region A" → many apps red; people count jumps across departments.
 - People unavailable on a critical person with no backup → their process goes down and
   the gap appears.
+- Before Run the whole bank is visible; after Run only the impacted chain is red and the
+  rest folds into green "still running" boxes. SWIFT Gateway outage never shows Loan
+  origination as down.
 - Every panel shows its source badge (Application Repository / Workforce System /
   Third-Party Risk Management / BIA register).
 - No "illustrative" text in the demo. No console errors. Other sections unchanged.
