@@ -253,115 +253,58 @@
           <p class="fine-print">RTO = how fast an app must recover · RPO = how much data you can lose · MAD = how long the business process can be down. Rule: an app’s RTO must fit inside the MAD of every process that relies on it. Figures are illustrative.</p>
         </section>
 
-        <!-- 6. PRODUCT DEMO -->
-        <section id="risk" class="slide slide-wide slide-demo">
+        <!-- 6. PRODUCT DEMO (v2) -->
+        <section id="risk" class="slide slide-wide slide-demo slide-demo-v2">
           <p class="eyebrow">Product demo</p>
-          <h2 class="slide-title">Change recovery time — watch the BIA and plan update instantly</h2>
-          <span class="demo-badge">Illustrative</span>
-          <div class="product-demo">
-            <div class="product-demo__main">
-              <div class="demo-process-card">
-                <p class="demo-kicker">Critical business process</p>
-                <form id="sim-form" class="sim-form sim-form--demo">
-                  <label class="demo-process-select">
-                    <select id="sim-dept" aria-label="Critical business process"></select>
-                  </label>
-                </form>
-                <dl class="demo-deps">
-                  <div>
-                    <dt>Supporting application</dt>
-                    <dd id="demo-app-name">—</dd>
-                  </div>
-                  <div class="demo-metric-pair">
-                    <div class="demo-metric">
-                      <dt>Application RTO</dt>
-                      <dd><span id="demo-rto-readout">—</span> hours</dd>
-                    </div>
-                    <div class="demo-metric">
-                      <dt>Maximum allowable downtime</dt>
-                      <dd><span id="demo-mad-readout">—</span> hours</dd>
-                    </div>
-                  </div>
-                </dl>
-                <div class="rto-mad-compare" aria-hidden="true">
-                  <div class="rto-mad-compare__track">
-                    <span id="demo-mad-marker" class="rto-mad-compare__mad"></span>
-                    <span id="demo-rto-bar" class="rto-mad-compare__rto"></span>
-                  </div>
-                  <div class="rto-mad-compare__labels">
-                    <span>0h</span>
-                    <span>MAD</span>
-                    <span>RTO</span>
-                  </div>
-                </div>
-              </div>
+          <h2 class="slide-title">See exactly who a disruption hits</h2>
+          <p id="demo-bank-name" class="demo-bank-name"></p>
 
-              <div id="gap-panel" class="gap-panel" role="status" aria-live="polite"></div>
-
-              <div class="bia-panel">
-                <h3 class="bia-panel__title">BIA preview</h3>
-                <div class="risk-legend">
-                  <span><i class="swatch swatch-4"></i>4 hours</span>
-                  <span><i class="swatch swatch-24"></i>24 hours</span>
-                  <span><i class="swatch swatch-48"></i>48 hours</span>
-                </div>
-                <div id="risk-bars" class="risk-bars"></div>
-              </div>
-
-              <div class="demo-recovery-wrap">
-                <h3 class="bia-panel__title">Recovery plan (generated)</h3>
-                <div class="demo-recovery-table-wrap">
-                  <table class="recovery-table demo-recovery-table">
-                    <thead>
-                      <tr>
-                        <th>Time</th>
-                        <th>Client risk</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody id="demo-recovery-rows"></tbody>
-                  </table>
-                </div>
-              </div>
+          <div class="demo-v2">
+            <div class="demo-v2__controls" aria-label="Disruption scenario controls">
+              <label class="demo-v2__field">
+                <span>Department</span>
+                <span class="demo-source-badge demo-source-badge--inline" title="In production this is synced from the BIA register.">Source: BIA register</span>
+                <select id="demo-dept-select" aria-label="Department"></select>
+              </label>
+              <label class="demo-v2__field">
+                <span>Process</span>
+                <select id="demo-process-select" aria-label="Business process"></select>
+              </label>
+              <label class="demo-v2__field">
+                <span>Disruption type</span>
+                <select id="demo-disruption-type" aria-label="Disruption type">
+                  <option value="application">Application outage</option>
+                  <option value="vendor">Vendor outage</option>
+                  <option value="site">Site unavailable</option>
+                  <option value="people">People unavailable</option>
+                </select>
+              </label>
+              <label class="demo-v2__field demo-v2__field--duration">
+                <span>Duration</span>
+                <input type="range" id="demo-duration" min="1" max="72" value="4" />
+                <output id="demo-duration-out" for="demo-duration">4</output>
+                <span class="demo-slider-unit">hours</span>
+              </label>
+              <button type="button" class="btn btn--primary" id="demo-run">Run</button>
             </div>
 
-            <aside class="product-demo__controls">
-              <p class="slide-body compact">
-                VitalCap ties each process’s <strong>MAD</strong> to its critical application’s <strong>RTO</strong>,
-                scores business impact, and rewrites the playbook when the math doesn’t close.
-              </p>
-              <fieldset class="demo-sliders" form="sim-form">
-                <legend>Recovery objectives</legend>
-                <label class="demo-slider">
-                  Application RTO
-                  <input type="range" id="sim-rto" min="0" max="48" step="1" />
-                  <output id="out-rto">10</output>
-                  <span class="demo-slider-unit">hours</span>
-                </label>
-                <label class="demo-slider">
-                  Process MAD
-                  <input type="range" id="sim-mad" min="1" max="72" step="1" />
-                  <output id="out-mad">8</output>
-                  <span class="demo-slider-unit">hours</span>
-                </label>
-                <label class="demo-slider demo-slider--sub">
-                  Data loss tolerance (RPO)
-                  <input type="range" id="sim-rpo" min="0" max="24" step="1" />
-                  <output id="out-rpo">1</output>
-                  <span class="demo-slider-unit">hours</span>
-                </label>
-              </fieldset>
-              <fieldset class="sim-impacts">
-                <legend>Impact ratings (0–8)</legend>
-                <label>Reputational<input type="range" id="sim-rep" min="0" max="8" step="1" value="4" /><output id="out-rep">4</output></label>
-                <label>Legal<input type="range" id="sim-legal" min="0" max="8" step="1" value="4" /><output id="out-legal">4</output></label>
-                <label>Regulatory<input type="range" id="sim-reg" min="0" max="8" step="1" value="8" /><output id="out-reg">8</output></label>
-                <label>Internal<input type="range" id="sim-internal" min="0" max="8" step="1" value="4" /><output id="out-internal">4</output></label>
-              </fieldset>
-              <p id="demo-disclaimer" class="fine-print demo-disclaimer"></p>
-            </aside>
+            <div class="demo-v2__main">
+              <div class="demo-v2__map-placeholder" aria-hidden="true">
+                <p>Impact map — coming next milestone</p>
+              </div>
+
+              <aside id="demo-app-sidebar" class="demo-v2__app-sidebar" aria-labelledby="demo-app-sidebar-title">
+                <h3 id="demo-app-sidebar-title" class="demo-v2__sidebar-title">
+                  Applications for this process
+                </h3>
+                <p class="demo-source-badge" title="In production this is synced from the bank's application repository.">Source: Application Repository</p>
+                <p class="demo-v2__sidebar-hint">Choose the application to disrupt.</p>
+                <ul id="demo-app-list" class="demo-app-list" role="listbox" aria-label="Applications"></ul>
+              </aside>
+
+              <div class="demo-v2__detail" id="demo-app-detail" aria-live="polite"></div>
+            </div>
           </div>
-          <p id="gap-alert" class="visually-hidden" role="status"></p>
         </section>
 
         <!-- 7. THREAT DEMO -->
@@ -689,6 +632,12 @@
     </main>
 
     <script src="data.js"></script>
+    <script src="data/bia-register.js"></script>
+    <script src="data/app-repository.js"></script>
+    <script src="data/workforce.js"></script>
+    <script src="data/third-party-vendors.js"></script>
+    <script src="bcp-engine.js"></script>
+    <script src="bcp-ui.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
