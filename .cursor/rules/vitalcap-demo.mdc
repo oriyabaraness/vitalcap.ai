@@ -1,6 +1,6 @@
 ---
 description: Rules for building the VitalCap interactive BCP dependency demo
-globs: ["public/bcp-*.js", "public/index.html", "public/styles.css", "tests/**"]
+globs: ["public/bcp-*.js", "public/data/**", "public/index.html", "public/styles.css", "public/app.js", "tests/**"]
 alwaysApply: false
 ---
 
@@ -10,5 +10,6 @@ alwaysApply: false
 - Plain HTML/CSS/JS only: no frameworks, bundlers or TypeScript. Keep calculation logic as pure functions in public/bcp-engine.js (no DOM access), tested with node --test.
 - Do not remove or break existing sections of public/index.html; only add the new #dependencies section and append styles.
 - Never write historical incident facts from memory; leave TODO placeholders with a required sourceUrl.
-- Label every cost figure "Assumption" and every company mapping "Illustrative".
+- Do not add "illustrative" labels to the demo. Every panel shows its data-source badge (Application Repository, Workforce System, Third-Party Risk Management, BIA register).
+- The demo is a bank: Department -> Process -> Application dropdowns; disruptions must be traced down to named teams and people.
 - Ask before installing any package not named in the spec.
