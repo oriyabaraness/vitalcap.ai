@@ -1,0 +1,14 @@
+---
+description: Rules for building the VitalCap interactive BCP dependency demo
+globs: ["public/bcp-*.js", "public/index.html", "public/styles.css", "tests/**"]
+alwaysApply: false
+---
+
+- The source of truth is VITALCAP_INTERACTIVE_SPEC.md in the repo root. Re-read it before each milestone.
+- Work one milestone at a time; stop and wait for the user's "go" before the next.
+- The user is a beginner: explain changes in plain language and give exact commands to run.
+- Plain HTML/CSS/JS only: no frameworks, bundlers or TypeScript. Keep calculation logic as pure functions in public/bcp-engine.js (no DOM access), tested with node --test.
+- Do not remove or break existing sections of public/index.html; only add the new #dependencies section and append styles.
+- Never write historical incident facts from memory; leave TODO placeholders with a required sourceUrl.
+- Label every cost figure "Assumption" and every company mapping "Illustrative".
+- Ask before installing any package not named in the spec.
